@@ -4,9 +4,9 @@ import com.se.jyh.controller.*;
 import com.se.jyh.view.*;
 
 public class main {
-
+	
 	public static void main(String[] args) {
-		Controller controller = new MenuController();
+		demoController controller = new demoController();
 		//controller.init();
 	}
 

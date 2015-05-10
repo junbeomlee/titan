@@ -25,4 +25,9 @@ public class MenuCommandSave_impl extends JMenuItem implements MenuCommand {
 		return a;
 		
 	}
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 }

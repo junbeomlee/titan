@@ -1,11 +1,16 @@
 package com.se.jyh.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.se.jyh.controller.Controller;
+import com.se.jyh.controller.demoController;
+import com.se.jyh.view.menuitem.MenuCommand;
 import com.se.jyh.view.menuitem.MenuCommandExit_impl;
 import com.se.jyh.view.menuitem.MenuCommandNew_impl;
 import com.se.jyh.view.menuitem.MenuCommandOpen_impl;
@@ -19,29 +24,55 @@ import com.se.jyh.view.menuitem.MenuCommandSave_impl;
  * MenuBar
  * 
  */
-public class MenuBar extends JMenuBar{
+public class MenuBar extends JMenuBar implements ActionListener{
 	
+	/**
+	 * Menu list 
+	 */
 	private JMenu file;
 	private JMenu help;
 	private JMenu view;
-	private Controller controller;
+	
+	/**
+	 * Menuitem list
+	 * -File
+	 */
+	private JMenuItem newDsm;
+	private JMenuItem openDsm;
+	private JMenuItem saveDsm;
+	private JMenuItem saveAsDsm;
+	private JMenuItem exitDsm;
+	
+	/**
+	 * MenuItem List
+	 * -Help
+	 */
+	
+	
+	
+	/**
+	 * MenuItem List
+	 * -View
+	 */
+	private demoController democontroller;
 	private JFrame frame;
 	
-	public MenuBar(Controller controller, JFrame frame){
-		
-		this.controller = controller;
+	public MenuBar(demoController democontroller, JFrame frame){
+		System.out.println("menubar");
+		this.democontroller = democontroller;
 		this.frame=frame;	
 		JMenu file = new JMenu("File");
 		
 		/**
 		 * set its items
 		 */
+		exitDsm = new MenuCommandExit_impl("Exit", frame,democontroller);
 		
-		JMenuItem newDsm = new MenuCommandNew_impl("New",frame);
-		JMenuItem openDsm = new MenuCommandOpen_impl("Open",frame);
-		JMenuItem saveDsm = new MenuCommandSave_impl("Save", frame);
-		JMenuItem saveAsDsm = new MenuCommandSaveAs_impl("Save as", frame);
-		JMenuItem exitDsm = new MenuCommandExit_impl("Exit", frame);
+		newDsm = new MenuCommandNew_impl("New",frame);
+		openDsm = new MenuCommandOpen_impl("Open",frame);
+		saveDsm = new MenuCommandSave_impl("Save", frame);
+		saveAsDsm = new MenuCommandSaveAs_impl("Save as", frame);
+		
 		
 		
 		file.add(newDsm);
@@ -50,11 +81,11 @@ public class MenuBar extends JMenuBar{
 		file.add(saveAsDsm);
 		file.add(exitDsm);
 		
-		controller.add(newDsm);
+		/*controller.add(newDsm);
 		controller.add(openDsm);
 		controller.add(saveDsm);
 		controller.add(saveAsDsm);
-		controller.add(exitDsm);
+		controller.add(exitDsm);*/
 		
 		JMenu help = new JMenu("Help");
 		JMenu view = new JMenu("view");
@@ -63,5 +94,21 @@ public class MenuBar extends JMenuBar{
 		this.add(view);
 		this.add(help);
 		
+		addListener();
+		
+	}
+	
+	public void addListener(){
+		System.out.println("Add listener");
+		newDsm.addActionListener(this);
+		openDsm.addActionListener(this);
+		saveDsm.addActionListener(this);
+		saveAsDsm.addActionListener(this);
+		exitDsm.addActionListener(this);
+	}
+	public void actionPerformed(ActionEvent e){
+		System.out.println("action");
+		MenuCommand command = (MenuCommand) e.getSource();
+		command.execute();
 	}
 }

@@ -13,10 +13,11 @@ public abstract class Controller implements ActionListener{
 	
 	public View view;
 	public Model model;
+	private demoController democontroller = new demoController();
 	
 	public Controller(){
 		this.model=new Model();
-		this.view=new View(this);
+		this.view=new View(democontroller);
 	}
 	
 	/**

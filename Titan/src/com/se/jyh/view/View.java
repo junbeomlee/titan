@@ -3,13 +3,10 @@ package com.se.jyh.view;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import com.se.jyh.controller.Controller;
-import com.se.jyh.controller.MainController;
+import com.se.jyh.controller.demoController;
 
 /**
  * 
@@ -21,17 +18,19 @@ import com.se.jyh.controller.MainController;
  * 
  */
 public class View{
+	
 	private JFrame frame;
 	private MenuBar menubar;
-	private Controller controller;
+	private demoController democontroller;
 	private JPanel leftpanelmenu;
 	
-	public View(Controller controller){
+	public View(demoController democontroller){
 		/**
 		 * to call the functions in controller
 		 */
-		this.controller = controller;
-		System.out.println(controller.toString());
+		System.out.println("view");
+		this.democontroller = democontroller;
+		//System.out.println(controller.toString());
 		/** setting frame: size, name, visibility
 		 */
 		frame = new JFrame("Titan");
@@ -41,11 +40,11 @@ public class View{
 		frame.setVisible(true);
 		
 		/** set menubar itmes is setting in the menubar class */
-		menubar = new MenuBar(this.controller,frame);
+		menubar = new MenuBar(this.democontroller,frame);
 		frame.setJMenuBar(menubar);
 		
 		/** set leftpanel menu*/
-		leftpanelmenu = new LeftPanelMenu(this.controller);
+		leftpanelmenu = new LeftPanelMenu(this.democontroller);
 		frame.add(leftpanelmenu);
 		
 	}

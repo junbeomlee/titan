@@ -2,14 +2,13 @@ package com.se.jyh.view;
 
 import javax.swing.JPanel;
 
-import com.se.jyh.controller.Controller;
-import com.se.jyh.controller.MainController;
+import com.se.jyh.controller.demoController;
 
 public class LeftPanelMenu extends JPanel{
 
-	private Controller controller;
+	private demoController democontroller;
 	
-	public LeftPanelMenu(Controller controller){
-		this.controller= controller;
+	public LeftPanelMenu(demoController controller){
+		this.democontroller= controller;
 	}
 }

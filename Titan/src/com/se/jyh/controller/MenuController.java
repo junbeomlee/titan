@@ -11,13 +11,11 @@ public class MenuController extends Controller{
 	public MenuController(){
 		super();
 	}
-	
 	public void add(JMenuItem item){
 		System.out.println("added");
 		System.out.println(item.toString());
 		item.addActionListener(this);
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		/**
