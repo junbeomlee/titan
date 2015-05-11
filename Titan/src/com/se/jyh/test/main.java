@@ -1,13 +1,15 @@
 package com.se.jyh.test;
 
 import com.se.jyh.controller.*;
-import com.se.jyh.view.*;
+import com.se.jyh.viewComponent.*;
 
 public class main {
 	
 	public static void main(String[] args) {
-		demoController controller = new demoController();
-		//controller.init();
+		demoController controller = demoController.getInstance();
+		Frame view=new Frame();
+		controller.setView(view);
+		controller.setModel();
 	}
 
 }

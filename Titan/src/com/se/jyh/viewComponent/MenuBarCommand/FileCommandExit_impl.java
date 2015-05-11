@@ -1,4 +1,4 @@
-package com.se.jyh.view.menuitem;
+package com.se.jyh.viewComponent.MenuBarCommand;
 
 import java.awt.FileDialog;
 
@@ -7,24 +7,20 @@ import javax.swing.JMenuItem;
 
 import com.se.jyh.controller.demoController;
 
-public class MenuCommandExit_impl extends JMenuItem implements MenuCommand {
-	private JFrame frame;
+public class FileCommandExit_impl extends JMenuItem implements MenuCommand {
+
+
 	private demoController democontroller;
 	
-	public MenuCommandExit_impl(String name, JFrame frame,demoController democontroller){
+	public FileCommandExit_impl(String name){
 		super(name);
-		this.frame= frame;
 		System.out.println("exit");
-		this.democontroller = democontroller;
-		this.democontroller.regMenuItems(this, "Exit");
+		
 	}
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		System.out.println("Exit execute");
-		democontroller.exit();
-		//FileDialog dialog = new FileDialog(frame,"Open",FileDialog.LOAD);
-		//dialog.show();
 	}
 	
 	@Override

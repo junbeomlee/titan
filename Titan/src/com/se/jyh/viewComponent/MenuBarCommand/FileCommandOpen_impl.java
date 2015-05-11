@@ -1,4 +1,4 @@
-package com.se.jyh.view.menuitem;
+package com.se.jyh.viewComponent.MenuBarCommand;
 
 import java.awt.FileDialog;
 import java.io.BufferedReader;
@@ -11,10 +11,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-public class MenuCommandOpen_impl extends JMenuItem implements MenuCommand {
+public class FileCommandOpen_impl extends JMenuItem implements MenuCommand {
 
 	private JFrame frame;
-	public MenuCommandOpen_impl(String name, JFrame frame){
+	public FileCommandOpen_impl(String name, JFrame frame){
 		super(name);
 		this.frame= frame;
 	}

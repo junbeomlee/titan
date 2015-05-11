@@ -3,8 +3,7 @@ package com.se.jyh.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.se.jyh.model.Model;
-import com.se.jyh.view.View;
+import com.se.jyh.viewComponent.Frame;
 
 
 /**
@@ -17,7 +16,7 @@ import com.se.jyh.view.View;
  * 
  */
 public class MainController {
-
+	/*
 	private List<Controller> controllerArr;
 	private Model model;
 	private View view;
@@ -31,5 +30,5 @@ public class MainController {
 		this.model=new Model();
 		//menucontroller = new MenuController();
 		//this.view=new View(menucontroller);
-	}
+	}*/
 }

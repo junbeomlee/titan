@@ -1,14 +1,14 @@
-package com.se.jyh.view.menuitem;
+package com.se.jyh.viewComponent.MenuBarCommand;
 
 import java.awt.FileDialog;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-public class MenuCommandNew_impl extends JMenuItem implements MenuCommand {
+public class FileCommandSaveAs_impl extends JMenuItem implements MenuCommand {
 
 	private JFrame frame;
-	public MenuCommandNew_impl(String name, JFrame frame){
+	public FileCommandSaveAs_impl(String name, JFrame frame){
 		super(name);
 		this.frame= frame;
 	}
@@ -30,5 +30,4 @@ public class MenuCommandNew_impl extends JMenuItem implements MenuCommand {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

@@ -1,4 +1,4 @@
-package com.se.jyh.view.menuitem;
+package com.se.jyh.viewComponent.MenuBarCommand;
 
 public interface MenuCommand {
 	public void execute();
