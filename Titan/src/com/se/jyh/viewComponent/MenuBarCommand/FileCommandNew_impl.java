@@ -5,19 +5,21 @@ import java.awt.FileDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-public class FileCommandNew_impl extends JMenuItem implements MenuCommand {
+import com.se.jyh.controller.demoController;
 
-	private JFrame frame;
-	public FileCommandNew_impl(String name, JFrame frame){
+public class FileCommandNew_impl extends JMenuItem implements Command {
+
+	private demoController democontroller;
+	
+	public FileCommandNew_impl(String name){
 		super(name);
-		this.frame= frame;
+		democontroller= demoController.getInstance();
 	}
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		System.out.println("New execute");
-		FileDialog dialog = new FileDialog(frame,"Open",FileDialog.LOAD);
-		dialog.show();
+		democontroller.newDsm();
 	}
 	@Override
 	public String toString(){
@@ -25,10 +27,6 @@ public class FileCommandNew_impl extends JMenuItem implements MenuCommand {
 		return a;
 		
 	}
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

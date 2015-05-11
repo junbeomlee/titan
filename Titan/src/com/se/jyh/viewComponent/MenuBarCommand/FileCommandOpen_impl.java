@@ -11,17 +11,21 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-public class FileCommandOpen_impl extends JMenuItem implements MenuCommand {
+import com.se.jyh.controller.demoController;
 
-	private JFrame frame;
-	public FileCommandOpen_impl(String name, JFrame frame){
+public class FileCommandOpen_impl extends JMenuItem implements Command {
+
+	private demoController democontroller;
+	
+	public FileCommandOpen_impl(String name){
 		super(name);
-		this.frame= frame;
+		democontroller= demoController.getInstance();
 	}
 	@Override
 	public void execute() {
+		democontroller.openDsm();
 		// TODO Auto-generated method stub
-		JFileChooser fc = new JFileChooser();
+		/*JFileChooser fc = new JFileChooser();
 		fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
 		
 		int rsp = fc.showOpenDialog( frame );
@@ -36,7 +40,7 @@ public class FileCommandOpen_impl extends JMenuItem implements MenuCommand {
             if( line.equals( "Avin Property File" ) )
             {
               // Clear current contents of pane.
-              /*pane.removeAll();
+              pane.removeAll();
               while( (line = br.readLine()) != null )
               {
                 StringTokenizer st = new StringTokenizer( line, "," );
@@ -50,7 +54,7 @@ public class FileCommandOpen_impl extends JMenuItem implements MenuCommand {
                   b.setBounds( xLoc, yLoc, w, h );
                   pane.add( b );
                 }
-              }*/
+              }
             }
             else
             {
@@ -61,21 +65,14 @@ public class FileCommandOpen_impl extends JMenuItem implements MenuCommand {
           }
           catch( IOException ioe )
           {};
-        }
+        }*/
 		
 		System.out.println("Open execute");
-		FileDialog dialog = new FileDialog(frame,"Open",FileDialog.LOAD);
-		dialog.show();
 	}
 	@Override
 	public String toString(){
 		String a = "opena";
 		return a;
-		
-	}
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
 		
 	}
 

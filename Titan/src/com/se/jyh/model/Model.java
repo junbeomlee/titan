@@ -4,4 +4,13 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  * 추상화를 할지 안할지 고민중 
+ * 
+ * 
  * */
+
+public class Model {
+	
+	public Model(){
+		
+	}
+}

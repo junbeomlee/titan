@@ -1,6 +1,5 @@
 package com.se.jyh.viewComponent.MenuBarCommand;
 
-public interface MenuCommand {
+public interface Command {
 	public void execute();
-	public void update();
 }

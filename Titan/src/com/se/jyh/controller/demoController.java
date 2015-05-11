@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.swing.JMenuItem;
 
+import com.se.jyh.model.Model;
 import com.se.jyh.viewComponent.Frame;
 
 /**
@@ -16,26 +17,41 @@ import com.se.jyh.viewComponent.Frame;
 public class demoController {
 	
 	private static demoController controller= new demoController();
-	public Frame view;
-	//public Model model;
+	private Frame view;
+	private Model TreeModel; // right panel
+	private Model TableModel; // left panel
 	/**
 	 * item list -> those which has a an action
 	 */
-	private JMenuItem newDsm;
-	private JMenuItem openDsm;
-	private JMenuItem saveDsm;
-	private JMenuItem saveAsDsm;
-	private JMenuItem exitDsm;
 	
 	private demoController(){}
 	
 	public static demoController getInstance(){
 		return controller;
 	}
-	public void setView(Frame view){
+	public void set(Frame view,Model model){
 		this.view=view;
+		//this.model=model;
 	}
-	public void setModel(){
+	public void setTreeModel(Model model){
 		
+	}
+	public void setTableModel(Model model){
+		
+	}
+	public void newDsm(){
+		
+	}
+	public void openDsm(){
+		
+	}
+	public void saveDsm(){
+		
+	}
+	public void saveAsDsm(){
+		
+	}
+	public void exitDsm(){
+		System.out.println("demo exit");
 	}
 }

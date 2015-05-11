@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 
 import com.se.jyh.controller.Controller;
 import com.se.jyh.controller.demoController;
-import com.se.jyh.viewComponent.MenuBarCommand.MenuCommand;
+import com.se.jyh.viewComponent.MenuBarCommand.Command;
 import com.se.jyh.viewComponent.MenuBarCommand.FileCommandExit_impl;
 import com.se.jyh.viewComponent.MenuBarCommand.FileCommandNew_impl;
 import com.se.jyh.viewComponent.MenuBarCommand.FileCommandOpen_impl;
@@ -67,13 +67,12 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		/**
 		 * set its items
 		 */
-		exitDsm = new FileCommandExit_impl("Exit");
 		
-		/*
-		newDsm = new MenuCommandNew_impl("New",frame);
-		openDsm = new MenuCommandOpen_impl("Open",frame);
-		saveDsm = new MenuCommandSave_impl("Save", frame);
-		saveAsDsm = new MenuCommandSaveAs_impl("Save as", frame);
+		exitDsm = new FileCommandExit_impl("Exit");
+		newDsm = new FileCommandNew_impl("New");
+		openDsm = new FileCommandOpen_impl("Open");
+		saveDsm = new FileCommandSave_impl("Save");
+		saveAsDsm = new FileCommandSaveAs_impl("Save as");
 		
 		
 		
@@ -82,12 +81,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		file.add(saveDsm);
 		file.add(saveAsDsm);
 		file.add(exitDsm);
-		
-		controller.add(newDsm);
-		controller.add(openDsm);
-		controller.add(saveDsm);
-		controller.add(saveAsDsm);
-		controller.add(exitDsm);*/
+	
 		
 		JMenu help = new JMenu("Help");
 		JMenu view = new JMenu("view");
@@ -111,7 +105,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e){
 		System.out.println("action");
-		MenuCommand command = (MenuCommand) e.getSource();
+		Command command = (Command) e.getSource();
 		command.execute();
 	}
 }
