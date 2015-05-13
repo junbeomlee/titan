@@ -127,7 +127,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	}
 	
 	public void addListener(){
-		System.out.println("Add listener");
 		
 		newDsm.addActionListener(this);
 		openDsm.addActionListener(this);
@@ -137,11 +136,13 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		newClustering.addActionListener(this);
 		loadClustering.addActionListener(this);
 		saveClustering.addActionListener(this);
+		saveClusteringAs.addActionListener(this);
+		Redraw.addActionListener(this);
+		ShowRowL.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e){
 		
-		System.out.println("action");
 		Command command = (Command) e.getSource();
 		command.execute();
 		

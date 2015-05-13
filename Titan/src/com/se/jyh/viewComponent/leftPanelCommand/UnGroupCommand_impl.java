@@ -1,8 +1,10 @@
 package com.se.jyh.viewComponent.leftPanelCommand;
 
+import javax.swing.JButton;
+
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
 
-public class UnGroupCommand_impl implements Command{
+public class UnGroupCommand_impl extends JButton implements Command{
 
 	@Override
 	public void execute() {

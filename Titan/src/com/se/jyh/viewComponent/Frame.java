@@ -2,15 +2,15 @@ package com.se.jyh.viewComponent;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 
 /**
  * 
@@ -25,67 +25,51 @@ public class Frame{
 	
 	private JFrame frame;
 	private MenuBar menubar;
-	private JScrollPane leftpanel;
+	private LeftPanel leftpanel;
+	private JPanel rightpanel;
 	private JSplitPane splitpanel;
+	private JToolBar toolbar;
 	
 	public Frame(){
 		
 		this.setMenuBar();
+		this.setToolBar();
+		
 		this.setLeftPanel();
 		this.setRightPanel();
+		
 		this.setFrame();
 		
-		
-		
-		/** set leftpanel menu
-		 * 
-		 */
-		
-		//scrollPane.setSize(50, 50);
-		
-		
-		
 	}
+	
 	public void setFrame(){
 		
 		/** setting frame: size, name, visibility */
-		
 		frame = new JFrame("Titan");
-		frame.setLayout(new BorderLayout());
+		//frame.setLayout(new BorderLayout());
+		//frame.getContentPane().setLayout(new FlowLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000,600);
+		//frame.setSize(1000,600);
+		frame.getContentPane().setPreferredSize(new Dimension(800, 550));
+		//frame.setSize(1000, 600);
 		frame.setVisible(true);
+		frame.pack();
 		
 		/**
 		 * add menubar
 		 */
 		frame.setJMenuBar(menubar);
+		frame.add(toolbar,BorderLayout.PAGE_START);
 		/**
 		 * add leftpanel
 		 */
-		//frame.getContentPane().add(leftpanel,BorderLayout.WEST);
-		/**
-		 * 
-		 */
-		JPanel panel1 = new JPanel(new BorderLayout());
 		JPanel panel2 = new JPanel();
-		JToolBar toolbar = new JToolBar();
-		JButton button = new JButton("asd"){
-				public Dimension getPreferredSize(){
-					return new Dimension(5,20);
-				}
-		};
-		//button.setSize(new Dimension(5,5));
-		//panel1.add(button);
-		toolbar.setFloatable(false);
-		toolbar.setRollover(true);
 		
-		panel1.add(toolbar,BorderLayout.PAGE_START);
-		
-	
-		toolbar.add(button);
-		splitpanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,panel1,panel2);
-		frame.getContentPane().add(splitpanel);
+		splitpanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,leftpanel,panel2);
+		//splitpanel.setPreferredSize(new Dimension(800,550));
+
+		//frame.add(splitpanel);
+		frame.getContentPane().add(splitpanel,BorderLayout.CENTER);
 		
 		//frame.pack();
 	}
@@ -102,17 +86,46 @@ public class Frame{
 		menubar = new MenuBar();
 	}
 	public void setLeftPanel(){
-		JTree tree = new JTree();
-		JTextArea asd =new JTextArea();
-		/*
-		leftpanel = new LeftPanel(tree,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		toolbar.add(button);
-		leftpanel.add(toolbar,BorderLayout.PAGE_START);
-		/*leftpanel = new LeftPanel();
-		leftpanel.setSize(500,100);*/
-		//leftpanel.setVisible(true);
+		
+		leftpanel = new LeftPanel(new BorderLayout());
+		leftpanel.setToolBar();
+		
+		//JTree tree = new JTree();
+		//JTextArea asd =new JTextArea();
+	
 	}
 	public void setRightPanel(){
+
+		
+	}
+	public void setToolBar(){
+		System.out.println("toolbar");
+		toolbar = new JToolBar();
+		
+		//toolbar.setLayout(null);
+		toolbar.setFloatable(true);
+		
+		JButton openButton = new JButton(new ImageIcon("image/open-dsm.png"));
+		JButton redrawButton = new JButton(new ImageIcon("image/redraw.png"));
+		JButton newClustering = new JButton(new ImageIcon("image/new-clsx.png"));
+		JButton loadClustering = new JButton(new ImageIcon("image/open-clsx.png"));
+		JButton saveClustering = new JButton(new ImageIcon("image/save-clsx.png"));
+		JButton saveClusteringAs = new JButton(new ImageIcon("image/save-clsx-as.png"));
+		
+		/**
+		 * set buttons 
+		 */
+		//openButton.setBounds(100, 20, 16, 16);
+		openButton.setPreferredSize(new Dimension(16,16));
+		
+		toolbar.add(openButton);
+		toolbar.add(redrawButton);
+		toolbar.addSeparator();
+		toolbar.add(newClustering);
+		toolbar.add(loadClustering);
+		toolbar.addSeparator();
+		toolbar.add(saveClustering);
+		toolbar.add(saveClusteringAs);
 		
 	}
 }
