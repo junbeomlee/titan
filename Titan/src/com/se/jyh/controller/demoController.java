@@ -23,7 +23,6 @@ public class demoController {
 	/**
 	 * item list -> those which has a an action
 	 */
-	
 	private demoController(){}
 	
 	public static demoController getInstance(){
@@ -43,7 +42,10 @@ public class demoController {
 		
 	}
 	public void openDsm(){
-		
+		//logic 처리
+		//model 바꿔 
+		//view 너 model업데이트해
+		//rightpanel
 	}
 	public void saveDsm(){
 		
@@ -53,5 +55,8 @@ public class demoController {
 	}
 	public void exitDsm(){
 		System.out.println("demo exit");
+	}
+	public void newcluste(){
+		
 	}
 }

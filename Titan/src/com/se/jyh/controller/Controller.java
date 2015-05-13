@@ -18,7 +18,6 @@ public abstract class Controller implements ActionListener{
 		//this.model=new Model();
 		this.view=new View(democontroller);
 	}
-	
 	abstract public void add(JMenuItem item);
 	
 	@Override

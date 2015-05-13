@@ -1,11 +1,23 @@
 package com.se.jyh.viewComponent.MenuBarCommand;
 
-public class FileCommandLoadCluster_impl implements Command{
+import javax.swing.JMenuItem;
+
+import com.se.jyh.controller.demoController;
+
+public class FileCommandLoadCluster_impl extends JMenuItem implements Command {
+
+	private demoController democontroller;
+
+	public FileCommandLoadCluster_impl(String name) {
+		super(name);
+		democontroller = demoController.getInstance();
+		System.out.println("exit");
+
+	}
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stu
 	}
 
 }

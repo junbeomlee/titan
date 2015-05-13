@@ -104,7 +104,6 @@ public class Frame{
 	public void setLeftPanel(){
 		JTree tree = new JTree();
 		JTextArea asd =new JTextArea();
-		
 		/*
 		leftpanel = new LeftPanel(tree,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		toolbar.add(button);

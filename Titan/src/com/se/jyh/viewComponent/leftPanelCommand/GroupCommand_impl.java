@@ -1,5 +1,13 @@
 package com.se.jyh.viewComponent.leftPanelCommand;
 
-public class GroupCommand_impl {
+import com.se.jyh.viewComponent.MenuBarCommand.Command;
+
+public class GroupCommand_impl implements Command{
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
