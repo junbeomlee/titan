@@ -2,8 +2,7 @@ package com.se.jyh.viewComponent;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -105,18 +104,25 @@ public class Frame{
 		//toolbar.setLayout(null);
 		toolbar.setFloatable(true);
 		
+		//ImageIcon ad = new ImageIcon("image/open-dsm.png");
 		JButton openButton = new JButton(new ImageIcon("image/open-dsm.png"));
+		openButton.setMargin(new Insets(0,0,0,0));
 		JButton redrawButton = new JButton(new ImageIcon("image/redraw.png"));
+		redrawButton.setMargin(new Insets(0,0,0,0));
 		JButton newClustering = new JButton(new ImageIcon("image/new-clsx.png"));
+		newClustering.setMargin(new Insets(0,0,0,0));
 		JButton loadClustering = new JButton(new ImageIcon("image/open-clsx.png"));
+		loadClustering.setMargin(new Insets(0,0,0,0));
 		JButton saveClustering = new JButton(new ImageIcon("image/save-clsx.png"));
+		saveClustering.setMargin(new Insets(0,0,0,0));
 		JButton saveClusteringAs = new JButton(new ImageIcon("image/save-clsx-as.png"));
+		saveClusteringAs.setMargin(new Insets(0,0,0,0));
 		
 		/**
 		 * set buttons 
 		 */
 		//openButton.setBounds(100, 20, 16, 16);
-		openButton.setPreferredSize(new Dimension(16,16));
+		//openButton.setPreferredSize(new Dimension(25,25));
 		
 		toolbar.add(openButton);
 		toolbar.add(redrawButton);

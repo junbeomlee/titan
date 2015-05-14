@@ -2,6 +2,7 @@ package com.se.jyh.viewComponent;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -32,7 +33,8 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		JToolBar toolbar = new JToolBar();
 		
 		expandAll = new ExpandAllCommand_impl(new ImageIcon("image/expand.png"));
-		
+		expandAll.setPreferredSize(new Dimension(20,20));
+		expandAll.setMargin(new Insets(-2, -2, -2, -2));
 		/**
 		 * set buttons 
 		 */
