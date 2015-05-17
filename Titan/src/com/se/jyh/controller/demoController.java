@@ -1,11 +1,11 @@
 package com.se.jyh.controller;
 
-import java.util.HashMap;
-
-import javax.swing.JMenuItem;
+import javax.swing.JTree;
 
 import com.se.jyh.model.Model;
+import com.se.jyh.model.MyTableModel;
 import com.se.jyh.viewComponent.Frame;
+import com.se.jyh.viewComponent.LeftPanel;
 
 /**
  * 
@@ -17,35 +17,40 @@ import com.se.jyh.viewComponent.Frame;
 public class demoController {
 	
 	private static demoController controller= new demoController();
-	private Frame view;
+	private Frame frame;
 	private Model TreeModel; // right panel
-	private Model TableModel; // left panel
+	private MyTableModel TableModel; // left panel
+	private LeftPanel leftPanel;
 	/**
 	 * item list -> those which has a an action
 	 */
-	private demoController(){}
+	private demoController(){ }
 	
 	public static demoController getInstance(){
 		return controller;
 	}
-	public void set(Frame view,Model model){
-		this.view=view;
+	public void set(Frame frame,Model model){
+		this.frame=frame;
 		//this.model=model;
+		leftPanel=this.frame.getLeftpanel();
 	}
 	public void setTreeModel(Model model){
 		
 	}
-	public void setTableModel(Model model){
-		
+	public void setTableModel(MyTableModel model){
+		this.TableModel=model;
+		//JTree asd= new JTree();
+		//leftPanel.add(asd);
+		//leftPanel.updateUI();
+		//JScrollPane spTable = new JScrollPane(this.TableModel);
+		//JPanel asd= new JPanel(this.TableModel);
+		//leftPanel //(this.TableModel);
 	}
 	public void newDsm(){
 		
 	}
 	public void openDsm(){
-		//logic 처리
-		//model 바꿔 
-		//view 너 model업데이트해
-		//rightpanel
+		
 	}
 	public void saveDsm(){
 		
@@ -54,9 +59,9 @@ public class demoController {
 		
 	}
 	public void exitDsm(){
-		System.out.println("demo exit");
+		
 	}
-	public void newcluste(){
+	public void newcluster(){
 		
 	}
 }

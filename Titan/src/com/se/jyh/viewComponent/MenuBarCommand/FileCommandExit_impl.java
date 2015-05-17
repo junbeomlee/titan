@@ -9,7 +9,6 @@ import com.se.jyh.controller.demoController;
 
 public class FileCommandExit_impl extends JMenuItem implements Command {
 
-
 	private demoController democontroller;
 	
 	public FileCommandExit_impl(String name){

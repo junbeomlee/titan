@@ -14,6 +14,7 @@ public class DeleteCommand_impl extends JButton implements Command{
 		this.setIcon(new ImageIcon("image/delete.png"));
 		this.setPreferredSize(new Dimension(20,20));
 		this.setMargin(new Insets(-2, -2, -2, -2));
+		this.setBorderPainted(false);
 	}
 	@Override
 	public void execute() {

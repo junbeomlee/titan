@@ -18,7 +18,7 @@ public class FileCommandNewCluster_impl extends JMenuItem implements Command {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		democontroller.newcluste();
+		//democontroller.newcluste();
 	}
 
 }

@@ -14,11 +14,11 @@ public class CollapseAllCommand_impl extends JButton implements Command {
 		this.setIcon(new ImageIcon("image/collapse.png"));
 		this.setPreferredSize(new Dimension(20,20));
 		this.setMargin(new Insets(0, 0, 0, 0));
+		this.setBorderPainted(false);
 	}
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

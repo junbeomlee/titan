@@ -31,6 +31,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 	private JButton moveUp;
 	private JButton moveDown;
 	private JButton unGroup;
+	private JToolBar toolbar;
 
 	public LeftPanel(BorderLayout borderLayout){
 		super(borderLayout);
@@ -40,7 +41,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		super();
 	}
 	public void setToolBar(){
-		JToolBar toolbar = new JToolBar();
+		toolbar = new JToolBar();
 		
 		/**
 		 * set buttons 
@@ -56,11 +57,10 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 	
 		
 	
-		this.add(toolbar,BorderLayout.PAGE_START);
 		
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
-		
+		//toolbar.getBackground();
 		/**
 		 * add items
 		 */
@@ -79,8 +79,11 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		
 		toolbar.add(delete);
 		
+		this.add(toolbar,BorderLayout.PAGE_START);
+		
 	}
 	public void setActionListener(){
+
 		expandAll.addActionListener(this);
 		collapseAll.addActionListener(this);
 		delete.addActionListener(this);
@@ -89,9 +92,11 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		moveDown.addActionListener(this);
 		unGroup.addActionListener(this);
 	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		System.out.println("mouse");
 		if (arg0.getButton() == MouseEvent.BUTTON2){
 			System.out.println("오른쪽 마우스 클릭 event");
 		}

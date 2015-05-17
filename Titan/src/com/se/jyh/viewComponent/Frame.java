@@ -9,7 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
+
+import com.se.jyh.model.MyTableModel;
 
 /**
  * 
@@ -21,6 +24,7 @@ import javax.swing.JToolBar;
  * 
  */
 public class Frame{
+	
 	
 	private JFrame frame;
 	private MenuBar menubar;
@@ -64,13 +68,13 @@ public class Frame{
 		 */
 		JPanel panel2 = new JPanel();
 		
-		splitpanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,leftpanel,panel2);
-		//splitpanel.setPreferredSize(new Dimension(800,550));
 
-		//frame.add(splitpanel);
+		leftpanel.add(new JTable(new MyTableModel(2)));
+		splitpanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,leftpanel,panel2);
+		
 		frame.getContentPane().add(splitpanel,BorderLayout.CENTER);
 		
-		//frame.pack();
+		frame.pack();
 	}
 	
 	public void setMenuBar(){
@@ -133,5 +137,21 @@ public class Frame{
 		toolbar.add(saveClustering);
 		toolbar.add(saveClusteringAs);
 		
+	}
+	
+	public LeftPanel getLeftpanel() {
+		return leftpanel;
+	}
+
+	public void setLeftpanel(LeftPanel leftpanel) {
+		this.leftpanel = leftpanel;
+	}
+
+	public JPanel getRightpanel() {
+		return rightpanel;
+	}
+
+	public void setRightpanel(JPanel rightpanel) {
+		this.rightpanel = rightpanel;
 	}
 }
