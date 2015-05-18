@@ -8,7 +8,9 @@ import com.se.jyh.viewComponent.LeftPanel;
 public class main {
 	
 	public static void main(String[] args) {
+		
 		demoController controller = demoController.getInstance();
+		
 		Frame frame = new Frame();
 		
 		Model model= new Model();

@@ -34,11 +34,15 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 	private JToolBar toolbar;
 
 	public LeftPanel(BorderLayout borderLayout){
+		
 		super(borderLayout);
-		this.democontroller= democontroller;
+		this.setToolBar();
+		this.democontroller= demoController.getInstance();
+		this.democontroller.setLeftPanel(this);
+		
 	}
-	public LeftPanel(){
-		super();
+	public void test(){
+		System.out.println("left register");
 	}
 	public void setToolBar(){
 		toolbar = new JToolBar();

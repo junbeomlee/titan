@@ -13,14 +13,12 @@ public class FileCommandExit_impl extends JMenuItem implements Command {
 	
 	public FileCommandExit_impl(String name){
 		super(name);
-		democontroller= demoController.getInstance();
-		System.out.println("exit");
-		
+		democontroller= demoController.getInstance();		
 	}
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("Exit execute");
+		System.out.println("execute exit");
 		democontroller.exitDsm();
 	}
 	@Override

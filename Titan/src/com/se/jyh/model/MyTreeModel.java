@@ -1,5 +1,8 @@
 package com.se.jyh.model;
 
+import java.util.List;
+
+import javax.swing.JTree;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.*;;
 /**
@@ -9,54 +12,19 @@ import javax.swing.tree.*;;
  * 
  * not sure
  */
-public class MyTreeModel implements TreeModel {
+public class MyTreeModel extends JTree {
 
-	@Override
-	public void addTreeModelListener(TreeModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Object getChild(Object arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getChildCount(Object arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getIndexOfChild(Object arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Object getRoot() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void removeTreeModelListener(TreeModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void valueForPathChanged(TreePath arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
+	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode("$root");
+	
+	public MyTreeModel(){
+		super(root);
 	}
 	
+	public void setNode(DsmModel model){
+		int i=0;
+		//model.getSize();
+		for(i=0;i<model.getSize();i++){
+			root.add(new DefaultMutableTreeNode(model.getNameList().get(i)));
+		}
+	}
 }

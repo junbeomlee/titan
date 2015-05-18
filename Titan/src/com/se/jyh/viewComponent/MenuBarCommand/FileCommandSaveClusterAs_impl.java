@@ -12,12 +12,13 @@ public class FileCommandSaveClusterAs_impl extends JMenuItem implements Command 
 		// TODO Auto-generated constructor stub
 		super(name);
 		democontroller = demoController.getInstance();
-		System.out.println("exit");
 	}
 
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
+		System.out.println("execute saveclusteras");
+		democontroller.saveClusterAs();
 
 	}
 

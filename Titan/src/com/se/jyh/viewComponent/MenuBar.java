@@ -66,8 +66,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private JMenuItem Redraw;
 	private JMenuItem ShowRowL;
 	
-	public MenuBar(){
-		System.out.println("menubar");	
+	public MenuBar(){	
 		
 		/**
 		 * set Jmenu
@@ -139,6 +138,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		saveClusteringAs.addActionListener(this);
 		Redraw.addActionListener(this);
 		ShowRowL.addActionListener(this);
+		show.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent e){

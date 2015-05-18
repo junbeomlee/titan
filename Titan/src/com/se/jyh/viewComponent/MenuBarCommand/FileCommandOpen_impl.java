@@ -23,6 +23,7 @@ public class FileCommandOpen_impl extends JMenuItem implements Command {
 	}
 	@Override
 	public void execute() {
+		System.out.println("execute open");
 		democontroller.openDsm();
 		// TODO Auto-generated method stub
 		/*JFileChooser fc = new JFileChooser();
@@ -66,8 +67,6 @@ public class FileCommandOpen_impl extends JMenuItem implements Command {
           catch( IOException ioe )
           {};
         }*/
-		
-		System.out.println("Open execute");
 	}
 	@Override
 	public String toString(){

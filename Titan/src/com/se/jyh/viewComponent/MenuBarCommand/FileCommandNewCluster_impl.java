@@ -11,7 +11,6 @@ public class FileCommandNewCluster_impl extends JMenuItem implements Command {
 	public FileCommandNewCluster_impl(String name) {
 		super(name);
 		democontroller = demoController.getInstance();
-		System.out.println("exit");
 
 	}
 
@@ -19,6 +18,9 @@ public class FileCommandNewCluster_impl extends JMenuItem implements Command {
 	public void execute() {
 		// TODO Auto-generated method stub
 		//democontroller.newcluste();
+		System.out.println("execute newcluster");
+		democontroller.newCluster();
+		
 	}
 
 }

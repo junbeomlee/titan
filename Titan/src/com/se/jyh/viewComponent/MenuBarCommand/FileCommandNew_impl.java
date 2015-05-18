@@ -18,7 +18,7 @@ public class FileCommandNew_impl extends JMenuItem implements Command {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("New execute");
+		System.out.println("execute new");
 		democontroller.newDsm();
 	}
 	@Override

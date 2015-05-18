@@ -19,8 +19,9 @@ public class FileCommandSaveAs_impl extends JMenuItem implements Command {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
+		System.out.println("execute saveas");
 		democontroller.saveAsDsm();
-		System.out.println("New execute");
+		//System.out.println("New execute");
 	}
 	@Override
 	public String toString(){
