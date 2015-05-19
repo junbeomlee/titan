@@ -223,23 +223,24 @@ public class demoController {
 	}
 
 	public void unGroup() {
-		// TODO Auto-generated method stub
-		
+		treeModel.unGroup();
 	}
 
 	public void moveUp() {
 		// TODO Auto-generated method stub
-		
+		treeModel.moveUp();
 	}
 
 	public void moveDown() {
 		// TODO Auto-generated method stub
-		
+		treeModel.moveDown();
+		//treeModel.isPathSelected(path)
 	}
 
 	public void group() {
-		// TODO Auto-generated method stub
 		
+		String groupName = JOptionPane.showInputDialog(null,"Group Name:");
+		treeModel.group(groupName);
 	}
 
 	public void expandAll() {
