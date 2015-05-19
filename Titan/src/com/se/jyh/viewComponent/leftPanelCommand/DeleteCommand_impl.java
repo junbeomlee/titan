@@ -23,7 +23,7 @@ public class DeleteCommand_impl extends JButton implements Command{
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("delete");
+		//System.out.println("delete");
 		this.democontroller.delete();
 	}
 

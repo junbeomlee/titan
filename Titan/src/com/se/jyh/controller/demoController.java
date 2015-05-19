@@ -99,6 +99,7 @@ public class demoController {
 	}
 	public void loadCluster(){
 		System.out.println("controller loadCluster");
+		
 	}  
 	public void newDsm(){
 		System.out.println("controller newdsm");
@@ -213,9 +214,12 @@ public class demoController {
 		System.out.println("controller showRL");
 	}
 
+	/**
+	 * action from leftpanel
+	 */
 	public void collapseAll() {
 		// TODO Auto-generated method stub
-		
+		treeModel.collapseAll();
 	}
 
 	public void unGroup() {
@@ -240,12 +244,14 @@ public class demoController {
 
 	public void expandAll() {
 		// TODO Auto-generated method stub
+		treeModel.expandAll();
+		//leftPanel.revalidate();
 		
 	}
 
 	public void delete() {
 		// TODO Auto-generated method stub
 		treeModel.delete();
-		this.leftPanel.revalidate();
+		//leftPanel.revalidate();
 	} 
 }

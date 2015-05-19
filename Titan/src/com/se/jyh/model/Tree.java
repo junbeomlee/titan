@@ -47,6 +47,33 @@ public class Tree extends JTree  {
 	}
 	public void delete() {
 		// TODO Auto-generated method stub
+		DefaultTreeModel model= (DefaultTreeModel) this.getModel();
 		
+		DefaultMutableTreeNode currentNode= root;
+		
+		while(currentNode!=null){
+			if(this.isPathSelected(new TreePath(currentNode.getPath()))){
+				
+				DefaultMutableTreeNode temp=currentNode;
+				currentNode=currentNode.getNextNode();
+				model.removeNodeFromParent(temp);
+			}else{
+				currentNode=currentNode.getNextNode();
+			}
+		}
+	}
+
+	public void expandAll() {
+		for(int i=0;i<this.getRowCount();i++){
+			this.expandRow(i);
+		}
+		
+	}
+
+	public void collapseAll() {
+		// TODO Auto-generated method stub
+		for(int i=0;i<this.getRowCount();i++){
+			this.collapseRow(i);
+		}
 	}
 }
