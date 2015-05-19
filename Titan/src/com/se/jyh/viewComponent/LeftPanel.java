@@ -8,6 +8,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -55,6 +56,8 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		 */
 		
 		expandAll = new ExpandAllCommand_impl();
+		expandAll.setContentAreaFilled(false);
+		
 		collapseAll = new CollapseAllCommand_impl();
 		delete = new DeleteCommand_impl();
 		group = new GroupCommand_impl() ;
@@ -80,7 +83,8 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		toolbar.addSeparator();
 		toolbar.add(moveUp);
 		toolbar.add(moveDown);
-		
+
+		toolbar.addSeparator();
 		toolbar.add(delete);
 		
 		this.add(toolbar,BorderLayout.PAGE_START);
