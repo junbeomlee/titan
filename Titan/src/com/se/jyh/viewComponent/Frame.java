@@ -12,7 +12,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-import com.se.jyh.model.MyTableModel;
+import com.se.jyh.model.Table;
 
 /**
  * 

@@ -1,5 +1,8 @@
 package com.se.jyh.controller;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,12 +11,14 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTree;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.se.jyh.model.DsmModel;
 import com.se.jyh.model.Model;
-import com.se.jyh.model.MyTableModel;
-import com.se.jyh.model.MyTreeModel;
+import com.se.jyh.model.Table;
+import com.se.jyh.model.Tree;
 import com.se.jyh.viewComponent.Frame;
 import com.se.jyh.viewComponent.LeftPanel;
 import com.se.jyh.viewComponent.RightPanel;
@@ -28,10 +33,9 @@ import com.se.jyh.viewComponent.RightPanel;
 public class demoController {
 	
 	private static demoController controller= new demoController();
-	private Frame frame;
-	private Model TreeModel; // right panel
-	private MyTableModel TableModel; // left panel
-	private MyTreeModel treeModel = new MyTreeModel();
+	private Frame frame; 
+	private Table tableModel= new Table();
+	private Tree treeModel = new Tree();
 	private LeftPanel leftPanel;
 	private RightPanel rightPanel;
 	private DsmModel dsmModel;
@@ -81,8 +85,8 @@ public class demoController {
 	 * set table model
 	 * @param model
 	 */
-	public void setTableModel(MyTableModel model){
-		this.TableModel=model;
+	public void setTableModel(Table model){
+		this.tableModel=model;
 	}
 	
 	/**
@@ -129,23 +133,23 @@ public class demoController {
 				String s = "";
 				try {
 					s=buffer.readLine();
+					
 					dsmModel.setSize(Integer.parseInt(s));
 					String[] temp;
+					
 					for(int i=0; i< Integer.parseInt(s); i++){
-						temp=buffer.readLine().split(" ");
-						dsmModel.setData(i,temp);
+						dsmModel.setData(i,buffer.readLine());
 					}
 					for(int i=0; i< Integer.parseInt(s); i++){
-						
-						dsmModel.setName(buffer.readLine());
+						dsmModel.setName(buffer.readLine(),i);
 					}
 					dsmModel.print();
-	
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println(line);
+				//System.out.println(line);
 				
 				if(buffer!=null){
 					try {
@@ -163,13 +167,30 @@ public class demoController {
 		/**
 		 * leftpanel 없데이트
 		 */
-		MyTreeModel asd = new MyTreeModel();
-		asd.setNode(dsmModel);
-		leftPanel.add(asd);
+		
+		/**
+		 * dsmModel을 기반으로해서 treeModel을 만듬
+		 */
+		treeModel.initNode(dsmModel);
+		
+		/**
+		 * 만들어진 treemodel을 leftpanel에 넣기
+		 */
+		leftPanel.add(treeModel);
 		leftPanel.revalidate();
+		
+		/**
+		 * table은 tree model로 부터 결정됨
+		 * table에 tree model 넣기
+		 */
+		
+		tableModel.setModel(treeModel);
+
 	}
 	public void saveDsm(){
 		System.out.println("controller savedsm");
+		tableModel.setModel(this.treeModel);
+		leftPanel.revalidate();
 	}
 	public void saveAsDsm(){
 		System.out.println("controller saveasdsm");
@@ -185,8 +206,46 @@ public class demoController {
 	}
 	public void redraw(){
 		System.out.println("controller redraw");
+		tableModel.setModel(this.treeModel);
+		leftPanel.revalidate();
 	}
 	public void showRowLabels(){	
 		System.out.println("controller showRL");
 	}
+
+	public void collapseAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void unGroup() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveUp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveDown() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void group() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void expandAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void delete() {
+		// TODO Auto-generated method stub
+		treeModel.delete();
+		this.leftPanel.revalidate();
+	} 
 }

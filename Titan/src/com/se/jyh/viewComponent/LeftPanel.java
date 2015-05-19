@@ -3,6 +3,8 @@ package com.se.jyh.viewComponent;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -20,7 +22,7 @@ import com.se.jyh.viewComponent.leftPanelCommand.MoveDownCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.MoveUpCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.UnGroupCommand_impl;
 
-public class LeftPanel extends JPanel implements ActionListener, MouseListener{
+public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 
 	private demoController democontroller;
 	
@@ -37,6 +39,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		
 		super(borderLayout);
 		this.setToolBar();
+		this.setActionListener();
 		this.democontroller= demoController.getInstance();
 		this.democontroller.setLeftPanel(this);
 		
@@ -59,9 +62,6 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener{
 		moveDown = new MoveDownCommand_impl();
 		unGroup = new UnGroupCommand_impl();
 	
-		
-	
-		
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
 		//toolbar.getBackground();
