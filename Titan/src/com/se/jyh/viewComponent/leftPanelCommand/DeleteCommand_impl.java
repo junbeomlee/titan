@@ -18,7 +18,7 @@ public class DeleteCommand_impl extends JButton implements Command{
 	public DeleteCommand_impl(){
 		this.observer=ObserverController.getInstance();
 		this.observer.setDelete(this);
-		
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/delete.png"));
 		this.setPreferredSize(new Dimension(20,20));

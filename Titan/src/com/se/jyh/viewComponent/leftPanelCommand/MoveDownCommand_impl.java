@@ -18,6 +18,7 @@ public class MoveDownCommand_impl extends JButton implements Command{
 	public MoveDownCommand_impl(){
 		this.observer=ObserverController.getInstance();
 		this.observer.setMoveDown(this);
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/down.png"));
 		this.setPreferredSize(new Dimension(20,20));

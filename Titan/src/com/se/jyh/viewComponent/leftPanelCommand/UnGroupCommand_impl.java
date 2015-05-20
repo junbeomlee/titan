@@ -16,8 +16,10 @@ public class UnGroupCommand_impl extends JButton implements Command{
 	private ObserverController observer;
 	
 	public UnGroupCommand_impl(){
+		
 		this.observer=ObserverController.getInstance();
 		this.observer.setUnGroup(this);
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/ungroup.png"));
 		this.setPreferredSize(new Dimension(20,20));

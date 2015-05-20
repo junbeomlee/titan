@@ -18,6 +18,7 @@ public class MoveUpCommand_impl extends JButton implements Command{
 	public MoveUpCommand_impl(){
 		this.observer=ObserverController.getInstance();
 		this.observer.setMoveUp(this);
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/up.png"));
 		this.setPreferredSize(new Dimension(20,20));

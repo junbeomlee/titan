@@ -18,6 +18,7 @@ public class ExpandAllCommand_impl  extends JButton implements Command {
 	public ExpandAllCommand_impl() {
 		this.observer=ObserverController.getInstance();
 		this.observer.setExpand(this);
+		this.setEnabled(false);
 		// TODO Auto-generated constructor stub
 		//super(imageIcon);
 		this.setIcon(new ImageIcon("image/expand.png"));

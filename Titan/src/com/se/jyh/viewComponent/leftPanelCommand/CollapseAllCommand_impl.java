@@ -19,7 +19,7 @@ public class CollapseAllCommand_impl extends JButton implements Command {
 		this.democontroller=demoController.getInstance();
 		this.observer=ObserverController.getInstance();
 		this.observer.setCollapseAll(this);
-		
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/collapse.png"));
 		this.setPreferredSize(new Dimension(20,20));

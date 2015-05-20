@@ -36,7 +36,7 @@ public class demoController{
 	private static demoController controller= new demoController();
 	private ObserverController observer;
 	private Frame frame; 
-	private Table tableModel= new Table();
+	private Table tableModel = new Table();
 	private Tree treeModel = new Tree();
 	private LeftPanel leftPanel;
 	private RightPanel rightPanel;
@@ -47,6 +47,7 @@ public class demoController{
 	private demoController(){
 		
 		treeModel.addTreeSelectionListener(observer);
+
 	}
 	
 	/**
@@ -76,6 +77,7 @@ public class demoController{
 	 * @param model
 	 */
 	public void set(Frame frame,Model model){
+		
 		this.observer=ObserverController.getInstance();
 		this.frame=frame;
 		dsmModel= new DsmModel();
@@ -181,6 +183,9 @@ public class demoController{
 		treeModel.initNode(dsmModel);
 		//treeModel.getModel().addTreeModelListener(observer);
 		treeModel.addTreeSelectionListener(observer);
+		observer.getCollapseAll().notifyAction(true);
+		observer.getExpand().notifyAction(true);
+		
 		/**
 		 * 만들어진 treemodel을 leftpanel에 넣기
 		 */

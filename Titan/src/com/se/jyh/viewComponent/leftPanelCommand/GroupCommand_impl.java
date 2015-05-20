@@ -18,6 +18,7 @@ public class GroupCommand_impl extends JButton implements Command{
 	public GroupCommand_impl(){
 		this.observer=ObserverController.getInstance();
 		this.observer.setGroup(this);
+		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/group.png"));
 		this.setPreferredSize(new Dimension(20,20));
