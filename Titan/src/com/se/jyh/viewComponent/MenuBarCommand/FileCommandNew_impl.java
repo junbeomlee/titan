@@ -9,6 +9,7 @@ import com.se.jyh.controller.demoController;
 
 public class FileCommandNew_impl extends JMenuItem implements Command {
 
+	
 	private demoController democontroller;
 	
 	public FileCommandNew_impl(String name){
@@ -27,6 +28,12 @@ public class FileCommandNew_impl extends JMenuItem implements Command {
 		return a;
 		
 	}
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 
 }

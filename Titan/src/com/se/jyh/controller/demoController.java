@@ -1,19 +1,20 @@
 package com.se.jyh.controller;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import com.se.jyh.model.DsmModel;
 import com.se.jyh.model.Model;
@@ -30,9 +31,10 @@ import com.se.jyh.viewComponent.RightPanel;
  * 
  * im thinking about makeing a factory register class -> this factory only do set and get
  */
-public class demoController {
+public class demoController{
 	
 	private static demoController controller= new demoController();
+	private ObserverController observer;
 	private Frame frame; 
 	private Table tableModel= new Table();
 	private Tree treeModel = new Tree();
@@ -42,7 +44,10 @@ public class demoController {
 	/**
 	 * item list -> those which has a an action
 	 */
-	private demoController(){ }
+	private demoController(){
+		
+		treeModel.addTreeSelectionListener(observer);
+	}
 	
 	/**
 	 * register leftPanel
@@ -71,6 +76,7 @@ public class demoController {
 	 * @param model
 	 */
 	public void set(Frame frame,Model model){
+		this.observer=ObserverController.getInstance();
 		this.frame=frame;
 		dsmModel= new DsmModel();
 	}
@@ -173,7 +179,8 @@ public class demoController {
 		 * dsmModel을 기반으로해서 treeModel을 만듬
 		 */
 		treeModel.initNode(dsmModel);
-		
+		//treeModel.getModel().addTreeModelListener(observer);
+		treeModel.addTreeSelectionListener(observer);
 		/**
 		 * 만들어진 treemodel을 leftpanel에 넣기
 		 */
@@ -223,36 +230,48 @@ public class demoController {
 	}
 
 	public void unGroup() {
+		treeModel.removeTreeSelectionListener(observer);
 		treeModel.unGroup();
+		treeModel.addTreeSelectionListener(observer);
+		//observer.valueChanged(new TreeSelectionEvent(treeModel, treeModel.getSelectionPaths(), null, null, null));
 	}
 
 	public void moveUp() {
 		// TODO Auto-generated method stub
+		treeModel.removeTreeSelectionListener(observer);
 		treeModel.moveUp();
+		treeModel.addTreeSelectionListener(observer);
+		observer.valueChanged(new TreeSelectionEvent(treeModel, treeModel.getSelectionPaths(), null, null, null));
 	}
 
 	public void moveDown() {
-		// TODO Auto-generated method stub
+		
+		treeModel.removeTreeSelectionListener(observer);
 		treeModel.moveDown();
-		//treeModel.isPathSelected(path)
+		treeModel.addTreeSelectionListener(observer);
+		observer.valueChanged(new TreeSelectionEvent(treeModel, treeModel.getSelectionPaths(), null, null, null));
+		
 	}
 
 	public void group() {
-		
+		treeModel.removeTreeSelectionListener(observer);
 		String groupName = JOptionPane.showInputDialog(null,"Group Name:");
 		treeModel.group(groupName);
+		treeModel.addTreeSelectionListener(observer);
 	}
 
 	public void expandAll() {
 		// TODO Auto-generated method stub
 		treeModel.expandAll();
-		//leftPanel.revalidate();
-		
 	}
 
 	public void delete() {
-		// TODO Auto-generated method stub
+		
+		treeModel.removeTreeSelectionListener(observer);
 		treeModel.delete();
-		//leftPanel.revalidate();
-	} 
+		treeModel.addTreeSelectionListener(observer);
+		//observer.valueChanged(new TreeSelectionEvent(treeModel, treeModel.getSelectionPaths(), null, null, null));
+	}
+
+
 }

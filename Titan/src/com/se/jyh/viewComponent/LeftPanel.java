@@ -90,24 +90,30 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		this.add(toolbar,BorderLayout.PAGE_START);
 		
 	}
+	
 	public void setActionListener(){
 
 		expandAll.addActionListener(this);
+		expandAll.addMouseListener(this);
 		collapseAll.addActionListener(this);
+		collapseAll.addMouseListener(this);
 		delete.addActionListener(this);
+		delete.addMouseListener(this);
 		group.addActionListener(this);
+		group.addMouseListener(this);
 		moveUp.addActionListener(this);
+		moveUp.addMouseListener(this);
 		moveDown.addActionListener(this);
+		moveDown.addMouseListener(this);
 		unGroup.addActionListener(this);
+		unGroup.addMouseListener(this);
+		
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("mouse");
-		if (arg0.getButton() == MouseEvent.BUTTON2){
-			System.out.println("오른쪽 마우스 클릭 event");
-		}
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -117,7 +123,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -21,4 +21,11 @@ public class FileCommandLoadCluster_impl extends JMenuItem implements Command {
 		democontroller.loadCluster();
 	}
 
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

@@ -26,4 +26,9 @@ public class FileCommandExit_impl extends JMenuItem implements Command {
 		String a = "i am a exit";
 		return a;
 	}
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }

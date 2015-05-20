@@ -19,4 +19,10 @@ public class HelpCommand extends JMenuItem implements Command{
 		democontroller.help();
 	}
 
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

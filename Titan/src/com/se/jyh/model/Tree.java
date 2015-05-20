@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import org.eclipse.swt.events.TreeEvent;
 
 /**
  * 
@@ -85,7 +88,7 @@ public class Tree extends JTree {
 
 	public void moveUp() {
 		// TODO Auto-generated method stub
-
+		
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 		List<DefaultMutableTreeNode> selectionList = new ArrayList<DefaultMutableTreeNode>();
 
@@ -103,9 +106,13 @@ public class Tree extends JTree {
 					currentNode =null;
 				}else{
 					DefaultMutableTreeNode temp = currentNode;
+					//this.removeSelectionPath(new TreePath(currentNode.getPath()));
 					model.removeNodeFromParent(currentNode);
 					model.insertNodeInto(temp, parent, parent.getIndex(before));
-					selectionList.add(temp);
+					
+					selectionList.add(currentNode);
+					//currentNode=currentNode.getNextSibling();
+					
 				}
 
 			} else {
@@ -118,6 +125,7 @@ public class Tree extends JTree {
 			selectionPath[i] = new TreePath(selectionList.get(i).getPath());
 		}
 		this.setSelectionPaths(selectionPath);
+		
 	}
 
 	public void moveDown() {
@@ -156,6 +164,7 @@ public class Tree extends JTree {
 		for (int i = 0; i < selectionList.size(); i++) {
 			selectionPath[i] = new TreePath(selectionList.get(i).getPath());
 		}
+		
 		this.setSelectionPaths(selectionPath);
 
 	}
@@ -221,7 +230,7 @@ public class Tree extends JTree {
 
 					DefaultMutableTreeNode temp = currentNode;
 
-					currentNode = currentNode.getNextNode();
+					currentNode = currentNode.getNextSibling();
 
 					model.removeNodeFromParent(temp);
 
@@ -229,7 +238,7 @@ public class Tree extends JTree {
 						model.insertNodeInto(selectionList.get(i), parent,
 								index + i);
 					}
-
+					selectionList.clear();
 					continue;
 				} else {
 					/**

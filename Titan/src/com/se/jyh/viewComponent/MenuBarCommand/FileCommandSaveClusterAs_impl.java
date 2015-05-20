@@ -22,4 +22,12 @@ public class FileCommandSaveClusterAs_impl extends JMenuItem implements Command 
 
 	}
 
+	
+
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -28,4 +28,10 @@ public class FileCommandSave_impl extends JMenuItem implements Command {
 		return a;
 		
 	}
+	
+	@Override
+	public void notifyAction(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }
