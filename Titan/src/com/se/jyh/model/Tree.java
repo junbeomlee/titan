@@ -175,20 +175,23 @@ public class Tree extends JTree {
 		// TODO Auto-generated method stub
 
 		List<DefaultMutableTreeNode> selectionList = new ArrayList<DefaultMutableTreeNode>();
+		
 		DefaultMutableTreeNode currentNode = root;
 		DefaultMutableTreeNode parent = null;
 		int index = 9999;
+		
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 
 		while (currentNode != null) {
 			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
+				
 				if (parent == null) {
 					parent = (DefaultMutableTreeNode) currentNode.getParent();
 					index = parent.getIndex(currentNode);
 				}
 				DefaultMutableTreeNode temp = currentNode;
 				selectionList.add(currentNode);
-				currentNode = currentNode.getNextNode();
+				currentNode = currentNode.getNextSibling();
 				model.removeNodeFromParent(temp);
 
 			} else {
@@ -233,15 +236,17 @@ public class Tree extends JTree {
 					DefaultMutableTreeNode temp = currentNode;
 
 					currentNode = currentNode.getNextSibling();
-
+					//System.out.println(currentNode.toString());
 					model.removeNodeFromParent(temp);
-
+					
 					for (int i = 0; i < selectionList.size(); i++) {
 						model.insertNodeInto(selectionList.get(i), parent,
 								index + i);
 					}
+					
 					selectionList.clear();
 					continue;
+					
 				} else {
 					/**
 					 * 자식없어서 ungroup불가능
