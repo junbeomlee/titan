@@ -3,15 +3,19 @@ package com.se.jyh.viewComponent;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import com.se.jyh.controller.demoController;
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
@@ -21,6 +25,8 @@ import com.se.jyh.viewComponent.leftPanelCommand.ExpandAllCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.GroupCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.MoveDownCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.MoveUpCommand_impl;
+import com.se.jyh.viewComponent.leftPanelCommand.RenameCommand_impl;
+import com.se.jyh.viewComponent.leftPanelCommand.SortCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.UnGroupCommand_impl;
 
 public class LeftPanel extends JPanel implements ActionListener, MouseListener {
@@ -35,15 +41,29 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 	private JButton moveDown;
 	private JButton unGroup;
 	private JToolBar toolbar;
+	
+	private JPopupMenu popUp;
+	private JMenuItem sort;
+	private JMenuItem rename;
 
 	public LeftPanel(BorderLayout borderLayout){
 		
 		super(borderLayout);
+		//this.setLayout(new ScrollPaneLayout());
 		this.setToolBar();
+		this.setPopUp();
 		this.setActionListener();
 		this.democontroller= demoController.getInstance();
 		this.democontroller.setLeftPanel(this);
 		
+	}
+	private void setPopUp() {
+		// TODO Auto-generated method stub
+		popUp = new JPopupMenu();
+		sort = new RenameCommand_impl();
+		rename = new SortCommand_impl();
+		popUp.add(sort);
+		popUp.add(rename);
 	}
 	public void test(){
 		System.out.println("left register");
@@ -67,7 +87,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 	
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
-		//toolbar.getBackground();
+		
 		/**
 		 * add items
 		 */
@@ -107,7 +127,8 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		moveDown.addMouseListener(this);
 		unGroup.addActionListener(this);
 		unGroup.addMouseListener(this);
-		
+		sort.addActionListener(this);
+		rename.addActionListener(this);
 	}
 	
 	@Override
@@ -120,6 +141,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		Command command = (Command) e.getSource();
 		command.execute();
+		
 	}
 	
 	@Override
@@ -133,8 +155,15 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		
 	}
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent e) {
+		if(e.getModifiers()==MouseEvent.BUTTON3_MASK){
+			JTree tree = (JTree) e.getSource();
+			TreePath path=tree.getSelectionPath();
+			DefaultMutableTreeNode node= (DefaultMutableTreeNode) path.getLastPathComponent();
+			if(node.getChildCount()>0){
+				popUp.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}
 		
 	}
 	@Override

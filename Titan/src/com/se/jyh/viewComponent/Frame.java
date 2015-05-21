@@ -28,7 +28,7 @@ public class Frame{
 	
 	private JFrame frame;
 	private MenuBar menubar;
-	private LeftPanel leftpanel= new LeftPanel(new BorderLayout());
+	private LeftPanel leftpanel;//= new LeftPanel();
 	private RightPanel rightpanel= new RightPanel(new BorderLayout());
 	private JSplitPane splitpanel;
 	private JToolBar toolbar;

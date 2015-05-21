@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -181,15 +182,17 @@ public class demoController{
 		 * dsmModel을 기반으로해서 treeModel을 만듬
 		 */
 		treeModel.initNode(dsmModel);
-		//treeModel.getModel().addTreeModelListener(observer);
 		treeModel.addTreeSelectionListener(observer);
+		treeModel.addMouseListener(this.leftPanel);
+		
 		observer.getCollapseAll().notifyAction(true);
 		observer.getExpand().notifyAction(true);
 		
 		/**
 		 * 만들어진 treemodel을 leftpanel에 넣기
 		 */
-		leftPanel.add(treeModel);
+		leftPanel.add(new JScrollPane(treeModel));
+		//leftPanel.add(treeModel);
 		leftPanel.revalidate();
 		
 		/**
@@ -276,6 +279,25 @@ public class demoController{
 		treeModel.delete();
 		treeModel.addTreeSelectionListener(observer);
 		//observer.valueChanged(new TreeSelectionEvent(treeModel, treeModel.getSelectionPaths(), null, null, null));
+	}
+
+	
+
+	public void rename() {
+		// TODO Auto-generated method stub
+		treeModel.removeTreeSelectionListener(observer);
+		
+		String groupName = JOptionPane.showInputDialog(null,"Enter new group name:");
+		treeModel.rename(groupName);
+		
+		treeModel.addTreeSelectionListener(observer);
+	}
+
+	public void sort() {
+		// TODO Auto-generated method stub
+		treeModel.removeTreeSelectionListener(observer);
+		treeModel.sort();
+		treeModel.addTreeSelectionListener(observer);
 	}
 
 

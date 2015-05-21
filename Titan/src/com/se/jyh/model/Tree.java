@@ -1,6 +1,8 @@
 package com.se.jyh.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JTree;
@@ -250,6 +252,69 @@ public class Tree extends JTree {
 				currentNode = currentNode.getNextNode();
 			} else {
 				currentNode = currentNode.getNextNode();
+			}
+		}
+	}
+
+	public void sort() {
+		
+		DefaultMutableTreeNode currentNode = root;
+		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
+		List<DefaultMutableTreeNode> list = new ArrayList<DefaultMutableTreeNode>();
+		/**
+		 * searching 시작 
+		 */
+		while (currentNode != null) {
+			/**
+			 * select된건지 체크 
+			 */
+			if (this.isPathSelected(new TreePath(currentNode.getPath()))){
+				System.out.println(currentNode.getChildCount());
+				for(int i=0; i<currentNode.getChildCount();i++){
+					/**
+					 * child node 저장 
+					 */
+					list.add((DefaultMutableTreeNode) currentNode.getChildAt(i));
+				}
+				for(int i=0; i<list.size();i++){
+					//System.out.println(currentNode.getChildCount());
+					/**
+					 * node저장후 지우기 나중에 추가할 예정 
+					 */
+					model.removeNodeFromParent(list.get(i));
+				}
+				Collections.sort(list,new Comparator() {
+
+					@Override
+					public int compare(Object arg0, Object arg1) {
+						// TODO Auto-generated method stub
+						return arg0.toString().toLowerCase().compareTo(arg1.toString().toLowerCase());
+					}
+					
+				});
+				
+				for(int i=0;i<list.size();i++){
+					model.insertNodeInto(list.get(i), currentNode, i);
+				}
+				this.expandPath(new TreePath(currentNode.getPath()));
+				break;
+			}else{
+			currentNode= currentNode.getNextNode();
+			}
+		}
+		
+	}
+
+	public void rename(String groupName) {
+		// TODO Auto-generated method stub
+		DefaultMutableTreeNode currentNode = root;
+		while (currentNode != null) {
+			if (this.isPathSelected(new TreePath(currentNode.getPath()))){
+				currentNode.setUserObject(groupName);
+				
+				break;
+			}else{
+			currentNode= currentNode.getNextNode();
 			}
 		}
 	}
