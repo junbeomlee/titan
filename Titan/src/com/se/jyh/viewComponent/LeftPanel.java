@@ -10,15 +10,14 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.se.jyh.controller.demoController;
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
+import com.se.jyh.viewComponent.leftPanelCommand.AddCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.CollapseAllCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.DeleteCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.ExpandAllCommand_impl;
@@ -33,6 +32,7 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 
 	private demoController democontroller;
 	
+	private JButton add;
 	private JButton expandAll;
 	private JButton collapseAll;
 	private JButton delete;
@@ -78,13 +78,15 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		expandAll = new ExpandAllCommand_impl();
 		expandAll.setContentAreaFilled(false);
 		
+		add = new AddCommand_impl();
 		collapseAll = new CollapseAllCommand_impl();
 		delete = new DeleteCommand_impl();
 		group = new GroupCommand_impl() ;
 		moveUp = new MoveUpCommand_impl();
 		moveDown = new MoveDownCommand_impl();
 		unGroup = new UnGroupCommand_impl();
-	
+		
+		
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
 		
@@ -105,6 +107,9 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		toolbar.add(moveDown);
 
 		toolbar.addSeparator();
+		
+		toolbar.add(add);
+		
 		toolbar.add(delete);
 		
 		this.add(toolbar,BorderLayout.PAGE_START);
@@ -114,21 +119,22 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 	public void setActionListener(){
 
 		expandAll.addActionListener(this);
-		expandAll.addMouseListener(this);
+		
 		collapseAll.addActionListener(this);
-		collapseAll.addMouseListener(this);
+		
 		delete.addActionListener(this);
-		delete.addMouseListener(this);
+	
 		group.addActionListener(this);
-		group.addMouseListener(this);
+	
 		moveUp.addActionListener(this);
-		moveUp.addMouseListener(this);
+
 		moveDown.addActionListener(this);
-		moveDown.addMouseListener(this);
+	
 		unGroup.addActionListener(this);
-		unGroup.addMouseListener(this);
+	
 		sort.addActionListener(this);
-		rename.addActionListener(this);
+	
+		add.addActionListener(this);
 	}
 	
 	@Override

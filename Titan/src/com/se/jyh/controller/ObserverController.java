@@ -17,6 +17,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.se.jyh.viewComponent.leftPanelCommand.AddCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.CollapseAllCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.DeleteCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.ExpandAllCommand_impl;
@@ -30,13 +31,14 @@ public class ObserverController implements TreeSelectionListener{
 	private static ObserverController observer= new ObserverController();
 	
 	
-	
+	private AddCommand_impl add;
 	private CollapseAllCommand_impl collapseAll;
 	private DeleteCommand_impl delete;
 	private ExpandAllCommand_impl expand;
 	private MoveDownCommand_impl moveDown;
 	private MoveUpCommand_impl moveUp;
 	private GroupCommand_impl group;
+	
 	public static void setObserver(ObserverController observer) {
 		ObserverController.observer = observer;
 	}
@@ -198,6 +200,16 @@ public class ObserverController implements TreeSelectionListener{
 	public boolean checkDelete(List<DefaultMutableTreeNode> selectionList){
 		
 		return true;
+	}
+
+	public void setAdd(AddCommand_impl addCommand_impl) {
+		// TODO Auto-generated method stub
+		this.add=addCommand_impl;
+	}
+
+	public AddCommand_impl getAdd() {
+		// TODO Auto-generated method stub
+		return this.add;
 	}
 
 	

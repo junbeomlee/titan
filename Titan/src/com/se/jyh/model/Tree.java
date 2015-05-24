@@ -47,9 +47,15 @@ public class Tree extends JTree {
 
 		for (int i = 0; i < model.getSize(); i++) {
 			root.add(new DefaultMutableTreeNode(
-					model.getDependencyData_arr()[i].getName()));
+					model.getDependencyData_arr().get(i).getName()));
 		}
 		DefaultMutableTreeNode asd = root.getNextNode();
+	}
+	public void addNode(DsmModel model){
+		System.out.println("zzz");
+		DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
+		treeModel.insertNodeInto(new DefaultMutableTreeNode(model.getDependencyData_arr().get(model.getSize()-1).getName()), root, root.getChildCount()-1);
+		
 	}
 
 	public DefaultMutableTreeNode getRoot() {

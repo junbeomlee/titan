@@ -8,10 +8,10 @@ public class DependencyData {
 
 	private String name;
 	private int number;
-	private int[] data;
+	private List<Integer> data;
 	
 	public DependencyData(){
-		
+		data= new ArrayList<Integer>();
 	}
 
 	public String getName() {
@@ -30,18 +30,20 @@ public class DependencyData {
 		this.number = number;
 	}
 
-	public int[] getData() {
+	public List<Integer> getData() {
 		return data;
 	}
 
-	public void setData(int[] data) {
-		this.data = data;
+	public void setData(int[] intTemp) {
+		for(int i=0;i<intTemp.length;i++){
+			this.data.add(intTemp[i]);
+		}
 	}
-
+	
 	public void printData() {
 		// TODO Auto-generated method stub
-		for(int i=0;i<data.length;i++){
-			System.out.print(data[i]+" ");
+		for(int i=0;i<data.size();i++){
+			System.out.print(data.get(i)+" ");
 		}
 	}
 
