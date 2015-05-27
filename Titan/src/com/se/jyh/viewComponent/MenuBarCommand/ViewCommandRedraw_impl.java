@@ -8,10 +8,11 @@ public class ViewCommandRedraw_impl extends JMenuItem implements Command {
 
 	private demoController democontroller;
 	
-	public ViewCommandRedraw_impl(String name) {
+	public ViewCommandRedraw_impl(demoController democontroller) {
 		// TODO Auto-generated constructor stub
-		super(name);
-		democontroller= demoController.getInstance();
+		super("Redraw");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();
 	}
 
 	@Override

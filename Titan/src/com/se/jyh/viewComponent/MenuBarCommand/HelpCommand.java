@@ -8,9 +8,10 @@ public class HelpCommand extends JMenuItem implements Command{
 	
 	private demoController democontroller;
 
-	public HelpCommand(String name){
-		super(name);
-		democontroller = demoController.getInstance();
+	public HelpCommand(demoController democontroller){
+		super("Help");
+		this.democontroller=democontroller;
+		//democontroller = demoController.getInstance();
 	}
 	@Override
 	public void execute() {

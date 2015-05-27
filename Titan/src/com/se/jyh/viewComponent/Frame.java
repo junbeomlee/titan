@@ -7,12 +7,10 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-import com.se.jyh.model.Table;
+import com.se.jyh.controller.demoController;
 
 /**
  * 
@@ -26,20 +24,46 @@ import com.se.jyh.model.Table;
 public class Frame{
 	
 	
+	public MenuBar getMenubar() {
+		return menubar;
+	}
+	public void setMenubar(MenuBar menubar) {
+		this.menubar = menubar;
+	}
+	public LeftPanel getLeftpanel() {
+		return leftpanel;
+	}
+	public void setLeftpanel(LeftPanel leftpanel) {
+		this.leftpanel = leftpanel;
+	}
+	public RightPanel getRightpanel() {
+		return rightpanel;
+	}
+	public void setRightpanel(RightPanel rightpanel) {
+		this.rightpanel = rightpanel;
+	}
+	private demoController democontroller;
 	private JFrame frame;
 	private MenuBar menubar;
 	private LeftPanel leftpanel;//= new LeftPanel();
-	private RightPanel rightpanel= new RightPanel(new BorderLayout());
+	private RightPanel rightpanel;
 	private JSplitPane splitpanel;
 	private JToolBar toolbar;
 	
-	public Frame(){
+	public Frame(demoController democontroller){
+		
+		this.democontroller=democontroller;
 		
 		this.setMenuBar();
 		this.setToolBar();
 		this.setLeftPanel();
+		this.setRightPanel();
 		this.setFrame();
 		
+		
+	}
+	public void setRightPanel(){
+		this.rightpanel=new RightPanel(new BorderLayout(),this.democontroller);
 	}
 	public void setFrame(){
 		
@@ -62,12 +86,12 @@ public class Frame{
 	
 	public void setMenuBar(){
 		
-		menubar = new MenuBar();
+		menubar = new MenuBar(this.democontroller);
 		
 	}
 	public void setLeftPanel(){
 		
-		leftpanel = new LeftPanel(new BorderLayout());
+		leftpanel = new LeftPanel(new BorderLayout(),this.democontroller);
 		
 	}
 	public void setToolBar(){

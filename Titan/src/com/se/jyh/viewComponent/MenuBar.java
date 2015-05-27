@@ -2,11 +2,14 @@ package com.se.jyh.viewComponent;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import com.se.jyh.controller.demoController;
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
 import com.se.jyh.viewComponent.MenuBarCommand.FileCommandExit_impl;
 import com.se.jyh.viewComponent.MenuBarCommand.FileCommandLoadCluster_impl;
@@ -29,8 +32,9 @@ import com.se.jyh.viewComponent.MenuBarCommand.ViewCommandShowRowL_impl;
  * 
  */
 
-public class MenuBar extends JMenuBar implements ActionListener{
+public class MenuBar extends JMenuBar implements ActionListener, MouseListener{
 	
+	private demoController democontroller;
 	/**
 	 * Menu list 
 	 */
@@ -66,8 +70,8 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private JMenuItem Redraw;
 	private JMenuItem ShowRowL;
 	
-	public MenuBar(){	
-		
+	public MenuBar(demoController democontroller){	
+		this.democontroller= democontroller;
 		/**
 		 * set Jmenu
 		 */
@@ -79,20 +83,20 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		 * set items
 		 */
 		
-		exitDsm = new FileCommandExit_impl("Exit");
-		newDsm = new FileCommandNew_impl("New");
-		openDsm = new FileCommandOpen_impl("Open");
-		saveDsm = new FileCommandSave_impl("Save");
-		saveAsDsm = new FileCommandSaveAs_impl("Save as");
-		newClustering= new FileCommandNewCluster_impl("New Clustering");
-		loadClustering= new FileCommandLoadCluster_impl("Load Clustering");
-		saveClustering= new FileCommandSaveCluster_impl("Save Clustering");
-		saveClusteringAs= new FileCommandSaveClusterAs_impl("Save Clustering As");
+		exitDsm = new FileCommandExit_impl(this.democontroller);
+		newDsm = new FileCommandNew_impl(this.democontroller);
+		openDsm = new FileCommandOpen_impl(this.democontroller);
+		saveDsm = new FileCommandSave_impl(this.democontroller);
+		saveAsDsm = new FileCommandSaveAs_impl(this.democontroller);
+		newClustering= new FileCommandNewCluster_impl(this.democontroller);
+		loadClustering= new FileCommandLoadCluster_impl(this.democontroller);
+		saveClustering= new FileCommandSaveCluster_impl(this.democontroller);
+		saveClusteringAs= new FileCommandSaveClusterAs_impl(this.democontroller);
 		
-		Redraw = new ViewCommandRedraw_impl("Redraw");
-		ShowRowL = new ViewCommandShowRowL_impl("Show Row Labels");
+		Redraw = new ViewCommandRedraw_impl(this.democontroller);
+		ShowRowL = new ViewCommandShowRowL_impl(this.democontroller);
 		
-		show= new HelpCommand("Show");
+		show= new HelpCommand(this.democontroller);
 		/**
 		 * add items to files
 		 */
@@ -145,6 +149,36 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		
 		Command command = (Command) e.getSource();
 		command.execute();
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

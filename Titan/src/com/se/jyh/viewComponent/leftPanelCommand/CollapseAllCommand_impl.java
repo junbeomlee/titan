@@ -6,19 +6,19 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import com.se.jyh.controller.ObserverController;
 import com.se.jyh.controller.demoController;
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
 
 public class CollapseAllCommand_impl extends JButton implements Command {
 
 	private demoController democontroller;
-	private ObserverController observer;
 	
-	public CollapseAllCommand_impl(){
-		this.democontroller=demoController.getInstance();
-		this.observer=ObserverController.getInstance();
-		this.observer.setCollapseAll(this);
+	
+	public CollapseAllCommand_impl(demoController democontroller){
+		//this.democontroller=demoController.getInstance();
+		this.democontroller=democontroller;
+		this.democontroller.setCollapseAll(this);
+		
 		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/collapse.png"));

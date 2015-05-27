@@ -8,9 +8,10 @@ public class FileCommandNewCluster_impl extends JMenuItem implements Command {
 
 	private demoController democontroller;
 
-	public FileCommandNewCluster_impl(String name) {
-		super(name);
-		democontroller = demoController.getInstance();
+	public FileCommandNewCluster_impl(demoController democontroller) {
+		super("New Cluster");
+		this.democontroller=democontroller;
+		//democontroller = demoController.getInstance();
 
 	}
 

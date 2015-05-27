@@ -12,9 +12,10 @@ public class FileCommandSaveAs_impl extends JMenuItem implements Command {
 	
 	private demoController democontroller;
 	
-	public FileCommandSaveAs_impl(String name){
-		super(name);
-		democontroller= demoController.getInstance();
+	public FileCommandSaveAs_impl(demoController democontroller){
+		super("Save As");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();
 	}
 	@Override
 	public void execute() {

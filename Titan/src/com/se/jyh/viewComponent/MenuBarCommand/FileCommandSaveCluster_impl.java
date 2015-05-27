@@ -8,9 +8,10 @@ public class FileCommandSaveCluster_impl extends JMenuItem implements Command {
 
 	private demoController democontroller;
 
-	public FileCommandSaveCluster_impl(String name) {
-		super(name);
-		democontroller = demoController.getInstance();
+	public FileCommandSaveCluster_impl(demoController democontroller) {
+		super("Save Cluster");
+		this.democontroller=democontroller;
+		//democontroller = demoController.getInstance();
 
 	}
 

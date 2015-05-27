@@ -12,9 +12,10 @@ public class FileCommandNew_impl extends JMenuItem implements Command {
 	
 	private demoController democontroller;
 	
-	public FileCommandNew_impl(String name){
-		super(name);
-		democontroller= demoController.getInstance();
+	public FileCommandNew_impl(demoController democontroller){
+		super("New");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();
 	}
 	@Override
 	public void execute() {

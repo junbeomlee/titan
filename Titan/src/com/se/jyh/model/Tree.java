@@ -22,9 +22,6 @@ import org.eclipse.swt.events.TreeEvent;
  */
 public class Tree extends JTree {
 
-	private static DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-			"$root");
-
 	private int[] index;
 
 	public int[] getIndex() {
@@ -35,16 +32,23 @@ public class Tree extends JTree {
 		this.index = index;
 	}
 
-	public Tree() {
+	public Tree(DefaultMutableTreeNode root) {
 		super(root);
 	}
 
 	public int rootSize() {
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) this.getModel().getRoot();
 		return root.getChildCount();
 	}
 
+	public DefaultMutableTreeNode getRoot(){
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) this.getModel().getRoot();
+		return root;
+	}
 	public void initNode(DsmModel model) {
 
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) this.getModel().getRoot();
+		
 		for (int i = 0; i < model.getSize(); i++) {
 			root.add(new DefaultMutableTreeNode(
 					model.getDependencyData_arr().get(i).getName()));
@@ -54,19 +58,15 @@ public class Tree extends JTree {
 	public void addNode(DsmModel model){
 		System.out.println("zzz");
 		DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-		treeModel.insertNodeInto(new DefaultMutableTreeNode(model.getDependencyData_arr().get(model.getSize()-1).getName()), root, root.getChildCount()-1);
+		treeModel.insertNodeInto(new DefaultMutableTreeNode(model.getDependencyData_arr().get(model.getSize()-1).getName()), this.getRoot(), this.getRoot().getChildCount()-1);
 		
-	}
-
-	public DefaultMutableTreeNode getRoot() {
-		return root;
 	}
 
 	public void delete() {
 		// TODO Auto-generated method stub
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 
 		while (currentNode != null) {
 			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
@@ -102,7 +102,7 @@ public class Tree extends JTree {
 
 		DefaultMutableTreeNode parent = null;
 		DefaultMutableTreeNode selection = null;
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 
 		while (currentNode != null) {
 			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
@@ -129,22 +129,24 @@ public class Tree extends JTree {
 		}
 
 		TreePath[] selectionPath = new TreePath[selectionList.size()];
+		
 		for (int i = 0; i < selectionList.size(); i++) {
 			selectionPath[i] = new TreePath(selectionList.get(i).getPath());
 		}
+		
 		this.setSelectionPaths(selectionPath);
 		
 	}
 
 	public void moveDown() {
 
-
+		
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 		List<DefaultMutableTreeNode> selectionList = new ArrayList<DefaultMutableTreeNode>();
 
 		DefaultMutableTreeNode parent = null;
 		DefaultMutableTreeNode selection = null;
-		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) root.getLastChild();
+		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) this.getRoot().getLastChild();
 
 		while (currentNode != null) {
 			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
@@ -182,7 +184,7 @@ public class Tree extends JTree {
 
 		List<DefaultMutableTreeNode> selectionList = new ArrayList<DefaultMutableTreeNode>();
 		
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 		DefaultMutableTreeNode parent = null;
 		int index = 9999;
 		
@@ -206,13 +208,14 @@ public class Tree extends JTree {
 		}
 
 		DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(groupName);
-
+		System.out.println(newGroup.toString());
+		System.out.println(parent.toString());
 		model.insertNodeInto(newGroup, parent, index);
 
 		for (int i = 0; i < selectionList.size(); i++) {
 			newGroup.add(selectionList.get(i));
 		}
-
+		///this.removeSelectionPath(new TreePath(newGroup.getPath()));
 	}
 
 	public void unGroup() {
@@ -220,7 +223,7 @@ public class Tree extends JTree {
 
 		List<DefaultMutableTreeNode> selectionList = new ArrayList<DefaultMutableTreeNode>();
 
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 		DefaultMutableTreeNode parent = null;
 		int index = 9999;
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
@@ -269,7 +272,7 @@ public class Tree extends JTree {
 
 	public void sort() {
 		
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 		List<DefaultMutableTreeNode> list = new ArrayList<DefaultMutableTreeNode>();
 		/**
@@ -317,8 +320,9 @@ public class Tree extends JTree {
 	}
 
 	public void rename(String groupName) {
+
 		// TODO Auto-generated method stub
-		DefaultMutableTreeNode currentNode = root;
+		DefaultMutableTreeNode currentNode = this.getRoot();
 		while (currentNode != null) {
 			if (this.isPathSelected(new TreePath(currentNode.getPath()))){
 				currentNode.setUserObject(groupName);
@@ -327,6 +331,125 @@ public class Tree extends JTree {
 			}else{
 			currentNode= currentNode.getNextNode();
 			}
+		}
+	}
+
+	public DefaultMutableTreeNode getGroupNode() {
+		// TODO Auto-generated method stub
+		DefaultMutableTreeNode currentNode = this.getRoot();
+		DefaultMutableTreeNode newRoot = null;
+		while (currentNode != null) {
+			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
+
+				newRoot=new DefaultMutableTreeNode(currentNode.toString());
+				
+				currentNode = currentNode.getNextNode();
+				/**
+				 * NODEADD하면 그 NODE가 없어지는듯 이거아는데 3시간 날림 
+				 */
+				while(currentNode != null){
+					DefaultMutableTreeNode temp=null;
+					if(currentNode.getChildCount()>0){ // 리커시브
+						temp = this.getParentNode(currentNode);
+					}else{ // 그냥 복사
+						temp = new DefaultMutableTreeNode(currentNode.toString());
+					}
+					newRoot.add(temp);
+					currentNode=currentNode.getNextSibling();
+				}
+				
+			} else {
+				currentNode = currentNode.getNextNode();
+			}
+		}
+		
+		
+		return newRoot;
+	}
+
+	public DefaultMutableTreeNode getParentNode(DefaultMutableTreeNode currentNode){
+		
+		DefaultMutableTreeNode parentNode= new DefaultMutableTreeNode(currentNode.toString());
+		currentNode=currentNode.getNextNode();
+		
+		while(currentNode!=null){
+			
+			DefaultMutableTreeNode temp=null;
+			
+			if(currentNode.getChildCount()>0){ // 리커시브
+				temp = this.getParentNode(currentNode);
+			}else{ // 그냥 복사
+				temp = new DefaultMutableTreeNode(currentNode.toString());
+			}
+			parentNode.add(temp);
+			currentNode=currentNode.getNextSibling();
+		}
+		
+		return parentNode;
+	}
+
+	public DefaultMutableTreeNode selectedNode() {
+		// TODO Auto-generated method stub
+		DefaultMutableTreeNode currentNode = this.getRoot();
+		
+		while (currentNode != null) {
+			if (this.isPathSelected(new TreePath(currentNode.getPath()))) {
+
+				return currentNode;
+			} else {
+				currentNode = currentNode.getNextNode();
+			}
+		}
+		return null;
+	}
+	
+	public void search(DefaultMutableTreeNode currentNode,List<DefaultMutableTreeNode> groupNodeList) {
+		
+		while(currentNode!=null){
+			/**
+			 * expanded면
+			 */
+			if(currentNode.getChildCount()>0){
+				if (this.isExpanded(new TreePath(currentNode.getPath()))) {
+					
+					search((DefaultMutableTreeNode) currentNode.getFirstChild(),groupNodeList);
+					currentNode = currentNode.getNextSibling();
+					
+				} else {
+					System.out.println(currentNode.toString());
+					currentNode=currentNode.getNextSibling();
+				}
+			}else{
+				System.out.println(currentNode.toString());
+				currentNode = currentNode.getNextSibling();
+			}
+			
+		}
+		
+	}
+	
+	public  void search2(DefaultMutableTreeNode currentNode,List<DefaultMutableTreeNode> groupNodeList){
+		
+		while(currentNode!=null){
+			/**
+			 * expanded면
+			 */
+			if(currentNode.getChildCount()>0){
+				if (this.isExpanded(new TreePath(currentNode.getPath()))) {
+					
+					//search((DefaultMutableTreeNode) currentNode.getFirstChild(),groupNodeList);
+					currentNode = currentNode.getNextNode();
+					
+				} else {
+					//System.out.println(currentNode.toString());
+					groupNodeList.add(currentNode);
+					currentNode=currentNode.getNextNode();
+				}
+			}else{
+				//System.out.println(currentNode.toString());
+				currentNode = currentNode.getNextNode();
+			}
+			
 		}
 	}
 }

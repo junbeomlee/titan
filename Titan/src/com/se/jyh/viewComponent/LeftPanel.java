@@ -20,6 +20,7 @@ import com.se.jyh.viewComponent.MenuBarCommand.Command;
 import com.se.jyh.viewComponent.leftPanelCommand.AddCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.CollapseAllCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.DeleteCommand_impl;
+import com.se.jyh.viewComponent.leftPanelCommand.DuplicateCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.ExpandAllCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.GroupCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.MoveDownCommand_impl;
@@ -27,6 +28,7 @@ import com.se.jyh.viewComponent.leftPanelCommand.MoveUpCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.RenameCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.SortCommand_impl;
 import com.se.jyh.viewComponent.leftPanelCommand.UnGroupCommand_impl;
+import com.se.jyh.viewComponent.leftPanelCommand.forkCommand_impl;
 
 public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 
@@ -45,25 +47,33 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 	private JPopupMenu popUp;
 	private JMenuItem sort;
 	private JMenuItem rename;
-
-	public LeftPanel(BorderLayout borderLayout){
+	private JMenuItem fork;
+	private JMenuItem duplicate;
+	
+	public LeftPanel(BorderLayout borderLayout,demoController democontroller){
 		
 		super(borderLayout);
-		//this.setLayout(new ScrollPaneLayout());
+		this.democontroller=democontroller;
+		this.democontroller.setLeftPanel(this);
+		
+		
 		this.setToolBar();
 		this.setPopUp();
 		this.setActionListener();
-		this.democontroller= demoController.getInstance();
-		this.democontroller.setLeftPanel(this);
+		
 		
 	}
 	private void setPopUp() {
 		// TODO Auto-generated method stub
 		popUp = new JPopupMenu();
-		sort = new RenameCommand_impl();
-		rename = new SortCommand_impl();
+		sort = new SortCommand_impl(this.democontroller);
+		rename = new RenameCommand_impl(this.democontroller);
+		fork = new forkCommand_impl(this.democontroller);
+		duplicate = new DuplicateCommand_impl(this.democontroller);
 		popUp.add(sort);
 		popUp.add(rename);
+		popUp.add(fork);
+		popUp.add(duplicate);
 	}
 	public void test(){
 		System.out.println("left register");
@@ -75,17 +85,16 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		 * set buttons 
 		 */
 		
-		expandAll = new ExpandAllCommand_impl();
+		expandAll = new ExpandAllCommand_impl(this.democontroller);
 		expandAll.setContentAreaFilled(false);
 		
-		add = new AddCommand_impl();
-		collapseAll = new CollapseAllCommand_impl();
-		delete = new DeleteCommand_impl();
-		group = new GroupCommand_impl() ;
-		moveUp = new MoveUpCommand_impl();
-		moveDown = new MoveDownCommand_impl();
-		unGroup = new UnGroupCommand_impl();
-		
+		add = new AddCommand_impl(this.democontroller);
+		collapseAll = new CollapseAllCommand_impl(this.democontroller);
+		delete = new DeleteCommand_impl(this.democontroller);
+		group = new GroupCommand_impl(this.democontroller) ;
+		moveUp = new MoveUpCommand_impl(this.democontroller);
+		moveDown = new MoveDownCommand_impl(this.democontroller);
+		unGroup = new UnGroupCommand_impl(this.democontroller);
 		
 		toolbar.setFloatable(false);
 		toolbar.setRollover(true);
@@ -115,26 +124,21 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 		this.add(toolbar,BorderLayout.PAGE_START);
 		
 	}
-	
 	public void setActionListener(){
 
 		expandAll.addActionListener(this);
-		
 		collapseAll.addActionListener(this);
-		
 		delete.addActionListener(this);
-	
 		group.addActionListener(this);
-	
 		moveUp.addActionListener(this);
-
 		moveDown.addActionListener(this);
-	
 		unGroup.addActionListener(this);
-	
 		sort.addActionListener(this);
-	
 		add.addActionListener(this);
+		fork.addActionListener(this);
+		rename.addActionListener(this);
+		duplicate.addActionListener(this);
+		
 	}
 	
 	@Override
@@ -167,7 +171,15 @@ public class LeftPanel extends JPanel implements ActionListener, MouseListener {
 			TreePath path=tree.getSelectionPath();
 			DefaultMutableTreeNode node= (DefaultMutableTreeNode) path.getLastPathComponent();
 			if(node.getChildCount()>0){
-				popUp.show(e.getComponent(), e.getX(), e.getY());
+				
+				if(node.isRoot()){
+					fork.setEnabled(false);
+					popUp.show(e.getComponent(), e.getX(), e.getY());
+					//fork.setEnabled(true);
+				}else{
+					fork.setEnabled(true);
+					popUp.show(e.getComponent(), e.getX(), e.getY());
+				}
 			}
 		}
 		

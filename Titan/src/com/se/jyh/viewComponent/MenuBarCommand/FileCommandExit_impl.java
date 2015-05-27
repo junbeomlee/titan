@@ -11,9 +11,10 @@ public class FileCommandExit_impl extends JMenuItem implements Command {
 
 	private demoController democontroller;
 	
-	public FileCommandExit_impl(String name){
-		super(name);
-		democontroller= demoController.getInstance();		
+	public FileCommandExit_impl(demoController democontroller){
+		super("Exit");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();		
 	}
 	@Override
 	public void execute() {

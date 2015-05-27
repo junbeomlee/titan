@@ -9,10 +9,11 @@ public class ViewCommandShowRowL_impl extends JMenuItem implements Command {
 	
 	private demoController democontroller;
 	
-	public ViewCommandShowRowL_impl(String name) {
+	public ViewCommandShowRowL_impl(demoController democontroller) {
 		// TODO Auto-generated constructor stub
-		super(name);
-		democontroller= demoController.getInstance();
+		super("ShowRowL");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();
 	}
 
 	@Override

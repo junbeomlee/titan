@@ -8,6 +8,7 @@ public class DsmModel {
 	private int size;
 	//private DependencyData[] dependencyData_arr;
 	private List<DependencyData> dependency_arr;
+	private Object[][] dsmMap;
 	
 	public DsmModel(){
 		dependency_arr = new ArrayList<DependencyData>();
@@ -26,11 +27,6 @@ public class DsmModel {
 	
 	public void setSize(int size){
 		
-		/*this.size=size;
-		this.dependencyData_arr = new DependencyData[size];
-		for(int i=0;i<this.size;i++){
-			this.dependencyData_arr[i]= new DependencyData();
-		}*/
 	}	
 	public void setName(String readLine, int number) {
 		this.dependency_arr.get(number).setName(readLine);
@@ -45,8 +41,6 @@ public class DsmModel {
 		/**
 		 * 자기자신과의 관계는 0이니까 fromThis는 한칸 더 길고 그걸 0으로 세팅
 		 */
-		System.out.println(fromThis.length);
-		fromThis[fromThis.length-1]=0;
 		DependencyData temp=new DependencyData();
 		temp.setName(dsmName);
 		temp.setData(fromThis);
@@ -62,12 +56,37 @@ public class DsmModel {
 		}
 		
 	}
+	
 	public void addDsmCol(int[] toThis) {
-		System.out.println(this.dependency_arr.size());
-		for(int i=0;i<this.dependency_arr.size();i++){
+		//System.out.println(this.dependency_arr.size());
+		toThis[toThis.length-1]=0;
+		for(int i=0;i<toThis.length;i++){
 			dependency_arr.get(i).getData().add(toThis[i]);
 		}
 		
+	}
+	
+	public int getNumFromName(String name){
+		for(int i=0;i<this.dependency_arr.size();i++){
+			if(name.equals(this.dependency_arr.get(i).getName())){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public Integer[] getMergedRow(int[] numberList) {
+		Integer[] MergedRow=new Integer[this.dependency_arr.size()];
+		for(int i=0;i<this.dependency_arr.size();i++){
+			int a=0;
+			for(int j=0;j<numberList.length;j++){
+				if(dependency_arr.get(numberList[j]).getData().get(i)==1){
+					a=1;
+				}
+			}
+			MergedRow[i]=a;
+		}
+		return MergedRow;
 	}
 	
 }

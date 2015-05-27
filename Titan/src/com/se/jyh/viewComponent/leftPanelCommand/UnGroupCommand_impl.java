@@ -6,26 +6,24 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import com.se.jyh.controller.ObserverController;
 import com.se.jyh.controller.demoController;
 import com.se.jyh.viewComponent.MenuBarCommand.Command;
 
 public class UnGroupCommand_impl extends JButton implements Command{
 
 	private demoController democontroller;
-	private ObserverController observer;
 	
-	public UnGroupCommand_impl(){
+	
+	public UnGroupCommand_impl(demoController democontroller){
 		
-		this.observer=ObserverController.getInstance();
-		this.observer.setUnGroup(this);
+		this.democontroller=democontroller;
+		this.democontroller.setUnGroup(this);
 		this.setEnabled(false);
 		
 		this.setIcon(new ImageIcon("image/ungroup.png"));
 		this.setPreferredSize(new Dimension(20,20));
 		this.setMargin(new Insets(-2, -2, -2, -2));
 		this.setBorderPainted(false);
-		this.democontroller = demoController.getInstance();
 		this.setToolTipText("UnGroup");
 	}
 	@Override

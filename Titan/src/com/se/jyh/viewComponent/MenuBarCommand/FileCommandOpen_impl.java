@@ -17,9 +17,10 @@ public class FileCommandOpen_impl extends JMenuItem implements Command {
 
 	private demoController democontroller;
 	
-	public FileCommandOpen_impl(String name){
-		super(name);
-		democontroller= demoController.getInstance();
+	public FileCommandOpen_impl(demoController democontroller){
+		super("Open");
+		this.democontroller=democontroller;
+		//democontroller= demoController.getInstance();
 	}
 	@Override
 	public void execute() {
