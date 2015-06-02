@@ -3,6 +3,8 @@ package com.se.jyh.viewComponent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,6 +13,13 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 
 import com.se.jyh.controller.demoController;
+import com.se.jyh.viewComponent.MenuBarCommand.Command;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandLoadClustering_impl;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandNewClustering_impl;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandOpen_impl;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandRedraw_impl;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandSaveClusteringAs_impl;
+import com.se.jyh.viewComponent.ToolBarCommand.ButtonCommandSaveClustering_impl;
 
 /**
  * 
@@ -21,7 +30,7 @@ import com.se.jyh.controller.demoController;
  * is a parent of all other views and has a frame
  * 
  */
-public class Frame{
+public class Frame implements ActionListener {
 	
 	
 	public MenuBar getMenubar() {
@@ -50,6 +59,15 @@ public class Frame{
 	private JSplitPane splitpanel;
 	private JToolBar toolbar;
 	
+	
+	private JButton openButton; 
+	private JButton redrawButton;
+	private JButton newClustering;
+	private JButton loadClustering; 
+	private JButton saveClustering;
+	private JButton saveClusteringAs;
+	
+	
 	public Frame(demoController democontroller){
 		
 		this.democontroller=democontroller;
@@ -69,8 +87,8 @@ public class Frame{
 		
 		/** setting frame: size, name, visibility */
 		frame = new JFrame("Titan");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setPreferredSize(new Dimension(800, 550));
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().setPreferredSize(new Dimension(1000, 650));
 		frame.setVisible(true);
 		frame.pack();
 		
@@ -94,23 +112,24 @@ public class Frame{
 		leftpanel = new LeftPanel(new BorderLayout(),this.democontroller);
 		
 	}
+	
+	public void disableFileMenu(){
+		
+		this.frame.setJMenuBar(null);
+		this.frame.remove(toolbar);
+		
+	}
 	public void setToolBar(){
 		
 		toolbar = new JToolBar();
 		
 		toolbar.setFloatable(true);
-		JButton openButton = new JButton(new ImageIcon("image/open-dsm.png"));
-		openButton.setMargin(new Insets(0,0,0,0));
-		JButton redrawButton = new JButton(new ImageIcon("image/redraw.png"));
-		redrawButton.setMargin(new Insets(0,0,0,0));
-		JButton newClustering = new JButton(new ImageIcon("image/new-clsx.png"));
-		newClustering.setMargin(new Insets(0,0,0,0));
-		JButton loadClustering = new JButton(new ImageIcon("image/open-clsx.png"));
-		loadClustering.setMargin(new Insets(0,0,0,0));
-		JButton saveClustering = new JButton(new ImageIcon("image/save-clsx.png"));
-		saveClustering.setMargin(new Insets(0,0,0,0));
-		JButton saveClusteringAs = new JButton(new ImageIcon("image/save-clsx-as.png"));
-		saveClusteringAs.setMargin(new Insets(0,0,0,0));
+		openButton = new ButtonCommandOpen_impl(this.democontroller);
+		redrawButton = new ButtonCommandRedraw_impl(this.democontroller);
+		newClustering = new ButtonCommandNewClustering_impl(this.democontroller);
+		loadClustering = new ButtonCommandLoadClustering_impl(this.democontroller);
+		saveClustering = new ButtonCommandSaveClustering_impl(this.democontroller);
+		saveClusteringAs = new ButtonCommandSaveClusteringAs_impl(this.democontroller);
 		
 		/**
 		 * add buttons 
@@ -124,6 +143,23 @@ public class Frame{
 		toolbar.addSeparator();
 		toolbar.add(saveClustering);
 		toolbar.add(saveClusteringAs);
+		
+		/**
+		 * 
+		 */
+		this.openButton.addActionListener(this);
+		this.redrawButton.addActionListener(this);
+		this.saveClustering.addActionListener(this);
+		this.saveClusteringAs.addActionListener(this);
+		this.loadClustering.addActionListener(this);
+		this.newClustering.addActionListener(this);
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Command command = (Command) e.getSource();
+		command.execute();
 		
 	}
 }

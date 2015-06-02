@@ -20,7 +20,7 @@ public class RightPanel extends JPanel {
 	private demoController democontroller;
 	private JPanel tablePanel;
 	private JScrollPane scrollPane;
-	private JTable jtable;
+	private JTable table;
 	
 	public RightPanel(BorderLayout borderLayout,demoController democontroller){
 			
@@ -36,10 +36,40 @@ public class RightPanel extends JPanel {
 			
 			
 	}
+	public void showRowLabel(){
+		
+		for (int column = 0; column < table.getColumnCount(); column++)
+		{
+		    TableColumn tableColumn = table.getColumnModel().getColumn(column);
+		    int preferredWidth = tableColumn.getMinWidth();
+		    int maxWidth = tableColumn.getMaxWidth();
+		 
+		    for (int row = 0; row < table.getRowCount(); row++)
+		    {
+		        TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
+		        Component c = table.prepareRenderer(cellRenderer, row, column);
+		        int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
+		        preferredWidth = Math.max(preferredWidth, width);
+		 
+		        //  We've exceeded the maximum width, no need to check other rows
+		 
+		        if (preferredWidth >= maxWidth)
+		        {
+		            preferredWidth = maxWidth;
+		            break;
+		        }
+		    }
+		 
+		    tableColumn.setPreferredWidth( preferredWidth );
+		}
+	}
 	
 	public void setTableModel(Table tableModel){
 		
-		JTable table = new JTable(tableModel);
+		this.table = new JTable(tableModel);
+		this.scrollPane= new JScrollPane(table);
+		
+		this.add(this.scrollPane,BorderLayout.CENTER);
 		
 		table.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 		 
@@ -67,10 +97,11 @@ public class RightPanel extends JPanel {
 		 
 		    tableColumn.setPreferredWidth( preferredWidth );
 		}
-		
-		JScrollPane asd = new JScrollPane(table);
-		this.add(asd,BorderLayout.CENTER);
-		
+	}
+
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.removeAll();
 	}
 	
 	

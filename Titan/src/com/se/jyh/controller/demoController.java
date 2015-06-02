@@ -3,6 +3,7 @@ package com.se.jyh.controller;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -22,14 +22,24 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.se.jyh.model.DsmModel;
-import com.se.jyh.model.Model;
+import com.se.jyh.model.GroupModel;
 import com.se.jyh.model.Table;
 import com.se.jyh.model.Tree;
 import com.se.jyh.viewComponent.Frame;
@@ -74,7 +84,9 @@ public class demoController implements TreeSelectionListener {
 	private Frame frame;
 	private JFileChooser Dsmfc;
 	private File Dsmfile;
+	private File cluFile;
 	private JScrollPane scrollPane;
+	private DefaultMutableTreeNode clusterRoot;
 	/*
 	 * dsmModel -> file로 부터 입력받음
 	 */
@@ -87,7 +99,6 @@ public class demoController implements TreeSelectionListener {
 	/**
 	 * treeModel -> 외부에서 넣어줌
 	 */
-
 	private Tree treeModel = null;
 	/**
 	 * leftPanel -> controller에 등록
@@ -97,6 +108,7 @@ public class demoController implements TreeSelectionListener {
 	 * rightPanel -> controller에 등록
 	 */
 	private RightPanel rightPanel;
+	private int checkLabel = 0; 
 
 	/**
 	 * leftmenu items 바뀌어야 하기때문에 등록된다.
@@ -203,9 +215,7 @@ public class demoController implements TreeSelectionListener {
 		this.rightPanel = rightPanel;
 	}
 
-	public void setTreeModel(Model model) {
-
-	}
+	
 
 	public void setTableModel(Table model) {
 		this.tableModel = model;
@@ -290,19 +300,142 @@ public class demoController implements TreeSelectionListener {
 	}
 
 	public void loadCluster() {
+		
+		if(this.Dsmfile==null){
+			return;
+		}
 		System.out.println("controller loadCluster");
+		
+		JFileChooser jfc = new JFileChooser(new File("."));
 
+		jfc.setDialogTitle("Open a File");
+		
+		jfc.setFileFilter(new FileFilter() {
+			public String getDescription() { return "Clsx Files(*.clsx)";	}
+			public boolean accept(File f) {	return f.isDirectory() || f.getName().contains(".clsx");}
+		});
+		
+		int result = jfc.showOpenDialog(null);
+		
+		if (result == JFileChooser.APPROVE_OPTION) {
+			
+			File nowFile = jfc.getSelectedFile();
+			
+			DocumentBuilderFactory docBuildFact = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuild = null;
+			
+			try {
+				docBuild = docBuildFact.newDocumentBuilder();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+			Document doc = null;
+			
+			try {
+				doc = docBuild.parse(nowFile);
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			doc.getDocumentElement().normalize();
+			
+			//this.treeModel = new Tree(new DefaultMutableTreeNode("$root"));
+			
+			//root.removeAllChildren();
+			
+			Node cluster = doc.getFirstChild();
+			Node docRoot = cluster.getFirstChild().getNextSibling();
+			
+			DefaultMutableTreeNode root =new DefaultMutableTreeNode(docRoot.getAttributes().getNamedItem("name").getNodeValue());//새로만들 트리 루트
+			
+			NodeList start = docRoot.getChildNodes();
+			//this.group(docRoot);
+			for(int i=0;i<start.getLength();i++){
+				Node p=start.item(i);
+				if(p.getNodeType()==Node.ELEMENT_NODE){
+					Element node = (Element) p;
+					NodeList check=p.getChildNodes();
+					if(check.getLength()==0){
+						/**
+						 * child이다 
+						 */
+						System.out.println(node.getAttribute("name"));
+						root.add(new DefaultMutableTreeNode(node.getAttribute("name")));
+					}else{
+						/**
+						 * group이다
+						 */
+						System.out.println("<group--------------");
+						System.out.println(node.getAttribute("name"));
+						DefaultMutableTreeNode temp = new DefaultMutableTreeNode(node.getAttribute("name"));
+						//System.out.println(temp.getChildCount());
+						root.add(this.groupNode(temp,p));
+						System.out.println("-----------------group>");
+					}
+				}
+			}
+			
+			this.treeModel = new Tree(root);
+			DefaultTreeModel model = (DefaultTreeModel) this.treeModel.getModel();
+			//System.out.println(root.getLevel());
+			//model.reload();
+			this.leftPanel.remove(1);
+			this.leftPanel.add(new JScrollPane(this.treeModel));
+			treeModel.addTreeSelectionListener(this);
+			treeModel.addMouseListener(this.leftPanel);
+			this.collapseAll.notifyAction(true);
+			this.expand.notifyAction(true);
+			this.add.notifyAction(true);
+			model.reload();
+			this.leftPanel.revalidate();
+		}
+		
 	}
-
+	
+	public DefaultMutableTreeNode groupNode(DefaultMutableTreeNode tempNode,Node tempRootNode){
+		
+		NodeList start = tempRootNode.getChildNodes();
+		
+		for(int i=0;i<start.getLength();i++){
+			Node p=start.item(i);
+			if(p.getNodeType()==Node.ELEMENT_NODE){
+				Element node = (Element) p;
+				NodeList check=p.getChildNodes();
+				if(check.getLength()==0){
+					/**
+					 * child이다 
+					 */
+					System.out.println(node.getAttribute("name"));
+					tempNode.add(new DefaultMutableTreeNode(node.getAttribute("name")));
+				}else{
+					/**
+					 * group이다
+					 */
+					System.out.println(node.getAttribute("name"));
+					DefaultMutableTreeNode temp = new DefaultMutableTreeNode(node.getAttribute("name"));
+					tempNode.add(this.groupNode(temp,p));
+				}
+			}
+		}
+		
+		//System.out.println(tempNode.getChildCount());
+		
+		return tempNode;
+	}
 	public void newDsm() {
+		
+		this.Dsmfile=null;
 		System.out.println("controller newdsm");
 		/**
 		 * new dsmName 받기
 		 */
-		if (this.treeModel != null) {
-			treeModel.collapseAll();
-			leftPanel.remove(leftPanel.getComponent(1));
-		}
+		
 		String dsmName = JOptionPane
 				.showInputDialog(null, "Enter new DsmName:");
 
@@ -334,6 +467,8 @@ public class demoController implements TreeSelectionListener {
 		}
 		int answer = JOptionPane.showConfirmDialog(null, namePanel,
 				"Put the name of row", JOptionPane.OK_CANCEL_OPTION);
+		//JOptionPane.YES_NO_CANCEL_OPTION
+		
 		if (answer != JOptionPane.OK_OPTION)
 			return;
 		JCheckBox[][] checkbox = new JCheckBox[Integer.parseInt(numberOfRow)][Integer
@@ -380,10 +515,14 @@ public class demoController implements TreeSelectionListener {
 			}
 		}
 
+		if (this.treeModel != null) {
+			treeModel.collapseAll();
+			leftPanel.remove(leftPanel.getComponent(1));
+		}
 		this.dsmModel = new DsmModel();
 
 		for (int i = 0; i < checkbox.length; i++) {
-			dsmModel.addDsmRow(rowList[i].getText(), toThis[i]);
+			dsmModel.addDsmRow(rowList[i].getText(), toThis[i],i);
 		}
 
 		dsmModel.print();
@@ -414,6 +553,15 @@ public class demoController implements TreeSelectionListener {
 
 	public void newCluster() {
 		System.out.println("controller newcluster");
+
+		treeModel.treeinitialization();
+		treeModel.initNode(dsmModel);
+		
+		tableModel.setModel(treeModel,dsmModel);
+		
+		DefaultTreeModel asd = (DefaultTreeModel) treeModel.getModel();
+		asd.reload();
+		leftPanel.revalidate();	
 	}
 
 	public void openDsm() {
@@ -421,7 +569,7 @@ public class demoController implements TreeSelectionListener {
 
 		if (this.treeModel != null) {
 			treeModel.collapseAll();
-			leftPanel.remove(leftPanel.getComponent(1));
+			leftPanel.remove(this.leftPanel.getComponent(1));
 		}
 
 		/**
@@ -453,7 +601,7 @@ public class demoController implements TreeSelectionListener {
 					String[] temp;
 
 					for (int i = 0; i < Integer.parseInt(s); i++) {
-						dsmModel.set(buffer.readLine());
+						dsmModel.set(buffer.readLine(),i);
 					}
 					for (int i = 0; i < Integer.parseInt(s); i++) {
 						dsmModel.setName(buffer.readLine(), i);
@@ -496,13 +644,14 @@ public class demoController implements TreeSelectionListener {
 			leftPanel.add(new JScrollPane(treeModel));
 			// leftPanel.add(treeModel);
 			leftPanel.revalidate();
+			//DefaultTreeModel asd = (DefaultTreeModel) treeModel.getModel();
+			//asd.reload();
 			/**
 			 * table은 tree model로 부터 결정됨 table에 tree model 넣기
 			 */
 			System.out.println("treeModel");
 			tableModel.setModel(treeModel,dsmModel);
-			//this.rightPanel.setTableModel(tableModel);
-			//this.redraw();
+			this.redraw();
 		}
 	}
 
@@ -606,14 +755,125 @@ public class demoController implements TreeSelectionListener {
 
 	public void saveCluster() {
 		System.out.println("controller savecluster");
+		//File clufc;
+		try {
+		
+			if(cluFile == null) //파일 새로 만들어줘야함
+			{
+					JFileChooser clufc = new JFileChooser(new File("."));
+					clufc.setDialogTitle("Save a cluster");
+			
+					clufc.setFileFilter(new FileFilter() {
+						public String getDescription() { return "Clsx Files(*.clsx)";	}
+						public boolean accept(File f) {	return f.isDirectory() || f.getName().contains(".clsx");}
+					});
+					
+					
+					int returnVal = clufc.showSaveDialog(null);
+					if(returnVal == JFileChooser.APPROVE_OPTION)
+					{
+						cluFile = new File( clufc.getSelectedFile().getAbsolutePath() + ".clsx" );
+						System.out.println("file 선택됨");
+					} else return;
+			
+			}
+		
+			DefaultMutableTreeNode previousNode, nowNode, lastLeaf;
+			
+			FileWriter fw = new FileWriter(cluFile.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			String output = new String("");
+			String EOL = System.getProperty("line.separator");
+
+			output += "<cluster>";
+			output += EOL;
+				
+			nowNode = treeModel.getRoot();
+			previousNode = nowNode;
+			lastLeaf = nowNode;
+			
+			output += groupName(nowNode.toString());
+			output += EOL;
+			
+			nowNode = nowNode.getNextNode();
+			lastLeaf = lastLeaf.getLastLeaf();
+			
+
+			while (true) {
+				if (nowNode.isLeaf()) 
+				{
+					output += leafName(nowNode.toString());
+					previousNode = nowNode;
+					nowNode = nowNode.getNextNode();
+					// Last Leaf check
+					if (nowNode == lastLeaf) {
+						output += (EOL + leafName(nowNode.toString()));
+						for (int i = 0; i < nowNode.getLevel(); i++)
+							output += EOL + "</group>";
+						output += EOL + "</cluster>";
+						break;
+					}else if (!previousNode.isNodeSibling(nowNode)) {
+						for (int i = 0; i < (previousNode.getLevel() - nowNode.getLevel()); i++)
+							output += EOL + "</group>";	
+					}
+
+				} else if (!nowNode.isLeaf()) {
+					output += groupName(nowNode.toString());
+					previousNode = nowNode;
+					nowNode = nowNode.getNextNode();
+
+					if (nowNode.isLeaf()) {
+
+					}
+				}
+				output += EOL;
+			}
+		
+			
+			bw.write(output);
+			bw.close();
+		
+			
+		}catch (IOException ex)
+			{
+				JOptionPane.showMessageDialog(null, "There is not file to save");			
+			}
+		
 	}
 
 	public void saveClusterAs() {
 		System.out.println("controller saveclusteras");
+			
+		cluFile = null;
+		
+		System.out.println("cluFile에 null 들어감");
+		
+		saveCluster();
+		System.out.println("SaveClusterAs 안의 SaveCluster 실행됨");
+		
+		
+			
+	}
+	
+	public String groupName(String nodename) {
+
+		String GroupNode;
+		GroupNode = "<group name=\"" + nodename + "\">";
+		return GroupNode;
+
 	}
 
+	public String leafName(String nodename) {
+		String LeafNode;
+
+		LeafNode = "<item name=\"" + nodename + "\"/>";
+		return LeafNode;
+	}
+	
 	public void help() {
 		System.out.println("controller help");
+		JOptionPane asd=new JOptionPane("Help");
+		asd.showMessageDialog(null, "2015-SE\n 김희주 \n 신윤호 \n 이준범");
 	}
 
 	public void redraw() {
@@ -622,43 +882,242 @@ public class demoController implements TreeSelectionListener {
 		/**
 		 * groupNodelist는 그룹으로 묵여져 있는 애를 가지고 있다.
 		 */
-		List<DefaultMutableTreeNode> groupNodeList = new ArrayList<DefaultMutableTreeNode>();
-		List<Integer[]> mergedRow = new ArrayList<Integer[]>(); 
-		List<Integer[]> mergedCol = new ArrayList<Integer[]>();
+		this.rightPanel.clear();
+		this.tableModel.clear();
 		
-		this.treeModel.search2(this.treeModel.getRoot(), groupNodeList);
+		List<GroupModel> groupList = new ArrayList<GroupModel>();
+		List<DefaultMutableTreeNode> groupNode = new ArrayList<DefaultMutableTreeNode>();
+		List<Integer> willBePrintedNodeNum = new ArrayList<Integer>();
+		List<String> willBePrinttedRowName = new ArrayList<String>();
 		
 		/**
-		 * 묶여져 있는 애들을 찾았으니까 묵여져 있는 애들의  번호를 찾는다.
-		 * 
+		 * groupList에는 group의 위치 number랑 그룹에 속해있는 node의 number를 집어 넣는다.
 		 */
+		DefaultMutableTreeNode currentNode = this.treeModel.getRoot();
 		
-		for(int i=0;i<groupNodeList.size();i++){
-			int[] numberList= new int[groupNodeList.get(i).getChildCount()];
-			for(int j=0;j<groupNodeList.get(i).getChildCount();j++){
-				numberList[j]=this.dsmModel.getNumFromName(groupNodeList.get(i).getChildAt(j).toString());
-			}
-			
+		int nowLevel=0;
+		
+		while(currentNode!=null){
 			/**
-			 * numberlist 기준으로 dsm에서 row와 col의 합집합을 가져온다
+			 * expanded면
 			 */
-			
-			mergedRow.add(this.dsmModel.getMergedRow(numberList));
-			
-			for(int z=0;z<this.dsmModel.getSize();z++){
-				System.out.print(mergedRow.get(0)[z]);
+			if(currentNode.getChildCount()>0){
+				if (this.treeModel.isExpanded(new TreePath(currentNode.getPath()))) {
+					
+					if(currentNode.getChildCount()==0){
+						for(int i=0;i<this.dsmModel.getDependencyData_arr().size();i++){
+							if(currentNode.toString().equals(this.dsmModel.getDependencyData_arr().get(i).getName())){
+								willBePrintedNodeNum.add(i);
+								willBePrinttedRowName.add(currentNode.toString());
+								break;
+							}
+						}
+						currentNode = currentNode.getNextNode();
+					}else{
+						currentNode= currentNode.getNextNode();
+					}
+				} else {
+					/**
+					 * group이 된 애들
+					 */
+					willBePrintedNodeNum.add(-1);
+					willBePrinttedRowName.add(currentNode.toString());
+					/**
+					 * -1은 group이라는 뜻
+					 */
+					groupNode.add(currentNode);
+					
+					//if(currentNode.getParent()==currentNode.getNex)
+					
+					if(currentNode==this.treeModel.getRoot()){
+						currentNode=null;
+						break;
+					}
+					if(currentNode.getNextNode()==null){
+						currentNode=null;
+						break;
+					}
+					
+					int standardLevel=currentNode.getLevel();
+					int check=0;
+					if(currentNode.getNextSibling()==null){
+						currentNode=currentNode.getNextNode();
+						while(currentNode.getLevel()>=standardLevel){
+							
+							currentNode=currentNode.getNextNode();
+							if(currentNode==null){
+								check=1;
+								break;
+							}
+						}
+						//currentNode=null;
+						if(check==1){
+							currentNode=null;
+						}
+						continue;
+					}
+					currentNode=currentNode.getNextSibling();
+				}
+				
+			}else{
+				
+				for(int i=0;i<this.dsmModel.getDependencyData_arr().size();i++){
+					if(currentNode.toString().equals(this.dsmModel.getDependencyData_arr().get(i).getName())){
+						willBePrintedNodeNum.add(i);
+						willBePrinttedRowName.add(currentNode.toString());
+						break;
+					}
+				}
+				currentNode = currentNode.getNextNode();
 			}
-			//mergedRow.add(asd);
 		}
+			
+		for(int i=0;i<willBePrintedNodeNum.size();i++){
+			System.out.print(willBePrintedNodeNum.get(i)+" : ");
+			System.out.println(willBePrinttedRowName.get(i));
+		}
+		
+		for(int i=0;i<groupNode.size();i++){
+			GroupModel group= new GroupModel();
+			
+			//System.out.println(groupNode.toString());
+			group.setName(groupNode.get(i).toString());
+			
+			for(int k=0;k<groupNode.get(i).getChildCount();k++){
+				for(int j=0;j<this.dsmModel.getDependencyData_arr().size();j++){
+					if(groupNode.get(i).getChildAt(k).toString().equals(this.dsmModel.getDependencyData_arr().get(j).getName())){
+						group.getChildNumber().add(j);
+						break;
+					}
+				}
+			}
+			groupList.add(group);
+		}
+		
+		/*for(int i=0;i<groupList.size();i++){
+			System.out.print(groupList.get(i).getName()+" has ");
+			for(int j=0;j<groupList.get(i).getChildNumber().size();j++){
+				System.out.print(groupList.get(i).getChildNumber().get(j)+" ");
+			}
+			System.out.println(" ");
+		}*/
+		
+		Object[][] tempDsmModel = new Object[this.dsmModel.getDependencyData_arr().size()][this.dsmModel.getDependencyData_arr().size()];
+		for(int i=0;i<this.dsmModel.getDependencyData_arr().size();i++){
+			for(int j=0;j<this.dsmModel.getDependencyData_arr().size();j++){
+				tempDsmModel[i][j]=this.dsmModel.getDependencyData_arr().get(i).getData().get(j);
+			}
+		}
+		
+		/*for(int i=0;i<this.dsmModel.getDependencyData_arr().size();i++){
+			for(int j=0;j<this.dsmModel.getDependencyData_arr().size();j++){
+				System.out.print(tempDsmModel[i][j]);
+			}
+			System.out.println(" ");
+		}*/
+		System.out.println("---------------------------------");
+		Object[][] asd=new Object[willBePrintedNodeNum.size()][willBePrintedNodeNum.size()+1];
+		int grouprownum=0;
+		for(int i=0;i<willBePrintedNodeNum.size();i++){
+			
+			int groupcolnum=0;
+			asd[i][0]=i+". "+willBePrinttedRowName.get(i);
+			//System.out.println(asd[i][0]);
+			for(int j=0;j<willBePrintedNodeNum.size();j++){
+				/**
+				 * 4가지 경우 둘다 그룹, row가 그룹, col이 그룹, 다 그룹 아님 
+				 */
+				if(willBePrintedNodeNum.get(i)==-1&&willBePrintedNodeNum.get(j)==-1){
+					int check=0;
+					for(int k=0;k<groupList.get(grouprownum).getChildNumber().size();k++){
+						for(int m=0;m<groupList.get(groupcolnum).getChildNumber().size();m++){
+							if((int)tempDsmModel[groupList.get(grouprownum).getChildNumber().get(k)][groupList.get(groupcolnum).getChildNumber().get(m)]==1){
+								check=1;
+							}
+						}
+					}
+					asd[i][j+1]=check;
+					groupcolnum++;
+				}else if (willBePrintedNodeNum.get(i)==-1){//row가 그룹 
+					int check=0;
+					for(int k=0;k<groupList.get(grouprownum).getChildNumber().size();k++){
+						if((int)tempDsmModel[groupList.get(grouprownum).getChildNumber().get(k)][willBePrintedNodeNum.get(j)]==1){
+							check=1;
+							break;
+						}
+					}
+					
+					//groupList.re
+					asd[i][j+1]=check;
+				}else if (willBePrintedNodeNum.get(j)==-1){//col이 그룹
+					int check=0;
+					for(int k=0;k<groupList.get(groupcolnum).getChildNumber().size();k++){
+						if((int)tempDsmModel[willBePrintedNodeNum.get(i)][groupList.get(groupcolnum).getChildNumber().get(k)]==1){
+							check=1;
+							break;
+						}
+					}
+					groupcolnum++;
+					asd[i][j+1]=check;
+				}else{
+					asd[i][j+1]=tempDsmModel[willBePrintedNodeNum.get(i)][willBePrintedNodeNum.get(j)];
+				}
+			}
+			
+			if(willBePrintedNodeNum.get(i)==-1){
+				grouprownum++;
+			}
+			groupcolnum=0;
+			
+		}
+		
+		
+		for(int i=0;i<willBePrintedNodeNum.size();i++){
+			for(int j=1;j<willBePrintedNodeNum.size()+1;j++){
+				System.out.print(asd[i][j]);
+			}
+			System.out.println(" ");
+		}
+		
+		this.tableModel.setData(asd);
+		this.tableModel.setHeaders(asd.length);
+		this.rightPanel.setTableModel(tableModel);
+		this.rightPanel.revalidate();
+
+	}
 		/**
 		 * 넘버 가져오기
 		 */
 		
-		leftPanel.revalidate();
-	}
+		//leftPanel.revalidate();
+
 
 	public void showRowLabels() {
+		
 		System.out.println("controller showRL");
+		
+		if(this.checkLabel==0){
+			DefaultTreeModel model =(DefaultTreeModel) this.treeModel.getModel();
+			
+			Object[][] temp=this.tableModel.getData();
+			
+			for(int i=0;i<tableModel.getColumnCount()-1;i++){
+				temp[i][0]=i;
+			}
+			
+			
+			
+			this.rightPanel.showRowLabel();
+			
+			for(int i=0;i<tableModel.getColumnCount()-1;i++){
+				this.tableModel.fireTableCellUpdated(i, 0);
+			}
+			this.checkLabel=1;
+		}else{
+			this.redraw();
+			this.checkLabel=0;
+		}
+		
 	}
 
 	/**
@@ -815,7 +1274,7 @@ public class demoController implements TreeSelectionListener {
 				/**
 				 * 새로 만들어인 dsmrow -> 1010011000001 이렇게 fromThis를 넣어준다.
 				 */
-				dsmModel.addDsmRow(dsmName, fromThis);
+				dsmModel.addDsmRow(dsmName, fromThis,dsmModel.getSize());
 				this.dsmModel.addDsmCol(toThis);
 
 				treeModel.addNode(this.dsmModel);
@@ -847,7 +1306,8 @@ public class demoController implements TreeSelectionListener {
 		dupliController.collapseAll.notifyAction(true);
 		dupliController.expand.notifyAction(true);
 		dupliController.add.notifyAction(true);
-
+		dupliController.setTableModel(new Table());
+		
 		dupliController.getLeftPanel().add(new JScrollPane(dupliTree));
 		dupliController.getLeftPanel().revalidate();
 
@@ -886,7 +1346,10 @@ public class demoController implements TreeSelectionListener {
 		Tree dupliTree = new Tree(newRootNode);
 
 		Frame dupliFrame = new Frame(dupliController);
-
+		
+		dupliFrame.disableFileMenu();
+		
+		
 		dupliController.setTreeModel(dupliTree);
 		dupliController.setDsmModel(dsmModel);
 		
@@ -896,6 +1359,7 @@ public class demoController implements TreeSelectionListener {
 		dupliController.collapseAll.notifyAction(true);
 		dupliController.expand.notifyAction(true);
 		dupliController.add.notifyAction(true);
+		dupliController.setTableModel(new Table());
 
 		dupliController.getLeftPanel().add(new JScrollPane(dupliTree));
 		dupliController.getLeftPanel().revalidate();

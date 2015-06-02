@@ -28,8 +28,24 @@ public class Table extends AbstractTableModel {
 	public Table() {
 		
 	}
-	public void setData() {
-
+	public Object[][] getData(){
+		return data;
+	}
+	public void setData(Object[][] data) {
+		
+		this.data=data;
+		
+		for(int i=0;i<data.length;i++){
+			for(int j=0;j<data.length+1;j++){
+				if(i+1==j){
+					data[i][j]=" .";
+				}else if(data[i][j].toString().equals("1")){
+					data[i][j]="x";
+				}else if(data[i][j].toString().equals("0")){
+					data[i][j]=" ";
+				}
+			}
+		}
 	}
 
 	public void setModel(Tree treeModel, DsmModel dsmModel) {
@@ -37,9 +53,16 @@ public class Table extends AbstractTableModel {
 		this.treeModel = treeModel;
 		this.dsmModel=dsmModel;
 		
-		
-		
 	}
+	
+	public void setHeaders(int number){
+		this.headers = new String[number+1];
+		headers[0]="";
+		for(int i=0;i<number;i++){
+			this.headers[i+1]=i+1+"";
+		}
+	}
+	
 
 	public List<String> getRowNumberList(){
 		List<String> nameList = new ArrayList<String>();
@@ -48,6 +71,7 @@ public class Table extends AbstractTableModel {
 		
 		return nameList;
 	}
+	
 	
 
 
@@ -74,6 +98,11 @@ public class Table extends AbstractTableModel {
 	public Object getValueAt(int arg0, int arg1) {
 		// TODO Auto-generated method stub
 		return this.data[arg0][arg1];
+	}
+	public void clear() {
+		// TODO Auto-generated method stub
+		this.data=null;
+		this.headers=null;
 	}
 
 }

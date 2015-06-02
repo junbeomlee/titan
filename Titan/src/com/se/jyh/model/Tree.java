@@ -20,6 +20,7 @@ import org.eclipse.swt.events.TreeEvent;
  * 
  *         not sure
  */
+
 public class Tree extends JTree {
 
 	private int[] index;
@@ -58,7 +59,7 @@ public class Tree extends JTree {
 	public void addNode(DsmModel model){
 		System.out.println("zzz");
 		DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-		treeModel.insertNodeInto(new DefaultMutableTreeNode(model.getDependencyData_arr().get(model.getSize()-1).getName()), this.getRoot(), this.getRoot().getChildCount()-1);
+		treeModel.insertNodeInto(new DefaultMutableTreeNode(model.getDependencyData_arr().get(model.getSize()-1).getName()), this.getRoot(), this.getRoot().getChildCount());
 		
 	}
 
@@ -428,7 +429,7 @@ public class Tree extends JTree {
 		
 	}
 	
-	public  void search2(DefaultMutableTreeNode currentNode,List<DefaultMutableTreeNode> groupNodeList){
+	public  void search2(DefaultMutableTreeNode currentNode,List<GroupModel> groupNodeList,List<String> willBePrintedNodeNumber){
 		
 		while(currentNode!=null){
 			/**
@@ -437,12 +438,12 @@ public class Tree extends JTree {
 			if(currentNode.getChildCount()>0){
 				if (this.isExpanded(new TreePath(currentNode.getPath()))) {
 					
-					//search((DefaultMutableTreeNode) currentNode.getFirstChild(),groupNodeList);
+					
 					currentNode = currentNode.getNextNode();
 					
 				} else {
 					//System.out.println(currentNode.toString());
-					groupNodeList.add(currentNode);
+					//groupNodeList.add(currentNode);
 					currentNode=currentNode.getNextNode();
 				}
 			}else{
@@ -451,5 +452,13 @@ public class Tree extends JTree {
 			}
 			
 		}
+	}
+
+	public void treeinitialization() {
+		// TODO Auto-generated method stub
+		
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) this.getModel().getRoot();
+		root.removeAllChildren();
+		   
 	}
 }
